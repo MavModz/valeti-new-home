@@ -1,0 +1,308 @@
+/* Room details page ---------------------*/
+
+.explore-single-slide {
+    width: 100%;
+    height: 650px;
+    position: relative;
+
+    @include lg {
+        height: 480px;  
+    }
+
+    @include sm {
+        height: 350px;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+  .explore-single-item {
+    position: relative;
+    z-index: 2;
+    .icon-wrap {
+      position: absolute;
+      left: 7%;
+      bottom: 16%;
+      z-index: 1;
+      height: 40px;
+      width: 40px;
+      line-height: 40px;
+      text-align: center;
+      background: var(--theme-color);
+      border-radius: 50%;
+      font-size: 18px;
+      color: var(--white-color);
+      transition: .4s;
+      cursor: pointer;
+      outline: 30px solid transparent;
+      &:hover {
+        background: var(--white-color);
+        color: var(--theme-color);
+      }
+    }
+}
+
+  .popular-list-1.explore-card {
+    position: absolute;
+    left: 9.4%;
+    bottom: 12%;
+    background: var(--white-color);
+    z-index: 1;
+    width: 690px;
+    padding: 60px 55px;
+    outline: 30px solid transparent;
+    .media-body .box-title {
+      font-size: 40px;
+      margin-bottom: 5px;
+      line-height: 1;
+    }
+    .media-body .price {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .media-body .price .month {
+      font-size: 18px;
+      color: var(--body-color);
+    }
+    .media-body .box-text {
+      font-size: 18px;
+      font-weight: 400;
+    }
+    .media-body {
+      border: 0;
+      padding: 0;
+      padding-bottom: 15px;
+    }
+    .bottom-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bottom-wrap .property-featured {
+      border: 0;
+      padding: 0;
+    }
+    .property-bottom {
+      margin: 0;
+      padding: 0;
+    }
+    .property-content {
+      padding: 0;
+    }
+    .bottom-wrap .property-featured li {
+      margin-right: 28px;
+    }
+    .bottom-wrap .property-featured li:after {
+      height: 30px;
+      right: -18px;
+    }
+  }
+  
+
+  .popular-list-1.explore-card {
+    opacity: 0;
+    transition: .4s;
+    visibility: hidden;
+    transform: scale(.8);
+    &.active {
+      opacity: 1;
+      transition: .4s;
+      visibility: visible;
+      transform: scale(1);
+    }
+  }
+
+
+  .icon-wrap .animation {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: var(--white-color);
+      opacity: 0.2;
+      border-radius:50%;
+      top: 0px;
+      left: 0px;
+      animation-duration: var(--ripple-ani-duration);
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-name: ripple;
+    }
+  }
+
+
+  @include xxl {
+    .popular-list-1.explore-card {
+      left: 10.4%;
+    }
+  }
+
+  @include xl {
+    .panoramaSlide1 .slider-arrow.style3 {
+      display: none;
+    }
+    .explore-single-item .explore-single-slide {
+      height: 600px;
+    }
+  }
+
+  @include md {
+    .popular-list-1.explore-card {
+      left: 11.3%;
+      width: 600px;
+      padding: 50px 45px;
+    }
+    .popular-list-1.explore-card .media-body .box-title {
+      font-size: 30px;
+    }
+    .popular-list-1.explore-card .media-body .box-text {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+
+  @include sm {
+    .popular-list-1.explore-card .media-body .box-title {
+      font-size: 28px;
+    }
+    .popular-list-1.explore-card .bottom-wrap .property-featured li {
+      margin-right: 20px;
+    }
+    .explore-single-item .icon-wrap {
+      left: 3%;
+    }
+    .popular-list-1.explore-card {
+      left: 8.3%;
+      padding: 45px 30px;
+      width: 80%;
+    }
+    .explore-single-item .property-featured {
+      column-gap: 0px;
+    }
+  }
+
+  @include xs {
+    .popular-list-1.explore-card .bottom-wrap .property-featured li {
+      margin-right: 12px;
+    }
+  }
+
+  @media (max-width: 490px) {
+    .popular-list-1.explore-card {
+      padding: 30px 20px;
+      width: 82%;
+      left: 55px;
+    }
+  }
+
+  @include vxs {
+    .popular-list-1.explore-card .media-body .box-title {
+      font-size: 25px;
+    }
+    .popular-list-1.explore-card .media-body .price {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .popular-list-1.explore-card {
+      padding:30px 16px;
+      width: 84%;
+      left: 47px;
+    }
+    .popular-list-1.explore-card .bottom-wrap {
+      align-items: start;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .popular-list-1.explore-card .bottom-wrap .property-featured li {
+      margin-right: 10px;
+      font-size: 13px;
+      gap: 3px;
+    }
+    .popular-list-1.explore-card .bottom-wrap .property-featured li .icon {
+      width: 20px;
+    }
+  }
+
+
+/* explore-page slider */
+.explore-single-item {
+    .main-container {
+        overflow: hidden;
+    }
+
+    .panoramaSlide1 {
+        height: 850px;
+
+        @include lg {
+            height: 680px;
+        }
+
+        @include sm {
+            height: 550px;
+        }
+    }
+
+    .swiper-slide {
+        position: relative;
+
+    }
+
+    .swiper-container {
+        cursor: default;
+    }
+
+    .explore-single-slide {
+        position: relative;
+        height: 850px;
+        width: 100%;
+        position: fixed;
+        z-index: 2;
+        &:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: var(--gray-color);
+            opacity: .4;
+
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+            cursor: url(../img/icon/360deg-cursor.svg), auto;
+
+        }
+    }
+
+    .explore-single-slide .panolens-canvas {
+        position: absolute;
+        inset: 0;
+        cursor: url(../img/icon/360deg-cursor.svg), auto;
+        z-index: 2;
+
+        &:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: var(--gray-color);
+            opacity: .4;
+
+        }
+
+    }
+}
+
+
+@include vxs {
+    .panoramaSlide1 .slider-arrow.style3 {
+        display: none;
+    }
+}

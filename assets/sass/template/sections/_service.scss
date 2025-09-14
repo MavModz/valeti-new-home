@@ -1,0 +1,186 @@
+/* Service Card ---------------------------------- */
+
+.service-card {
+    &:hover {
+        .box-content .icon-wrap img {
+            transform: rotateY(180deg);
+        }
+        .box-thumb img {
+            transform: scale(1.1);
+        }
+    }
+    .box-thumb {
+        border-radius: 16px;
+        overflow: hidden;
+        transition: .4s;
+        img {
+            transition: .4s;
+            width: 100%;
+        }
+    }
+    .box-content {
+        padding: 30px;
+        background: var(--white-color);
+        border: 1px solid var(--th-border-color);
+        border-radius: 16px;
+        margin-top: -60px;
+        margin-left: 24px;
+        margin-right: 24px;
+        background-color: var(--white-color);
+        position: relative;
+        z-index: 1;
+        .icon-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            .icon {
+                height: 80px;
+                width: 80px;
+                border-radius: 50%;
+                background: #FDEDEC;
+                text-align: center;
+                line-height: 80px;
+                img {
+                    transition: .4s;
+                }
+            }
+            .number {
+                h3 {
+                    font-size: 57px;
+                    color: var(--body-color);
+                    opacity: .2;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+@include xs {
+    .service-card .box-content {
+        padding: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+
+
+
+/* Service Details ---------------------------------- */
+
+
+.page-single .page-img {
+    img {
+        border-radius: 16px;
+    }
+    .tag-wrap {
+        display: flex;
+        gap: 10px;
+        padding: 0;
+        margin-top: 30px;
+        color: var(--white-color);
+        font-size: 16px;
+        li {
+            list-style: none;
+            background: var(--theme-color);
+            border-radius: 20px;
+            padding: 4px 20px;
+            .box-review {
+                display: flex;
+                color: var(--white-color);
+                gap: 5px;
+                align-items: center;
+                i {
+                    font-size: 12px;
+                    color: var(--yellow-color);
+                }
+                .rating {
+                    color: var(--black-color);
+                }
+            }
+        }
+        .box-review-wrap {
+            background: var(--smoke-color);
+        }
+    }
+}
+
+
+
+.page-title {
+    font-size: 38px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--gray-color);
+
+    @include sm {
+        font-size: 28px;
+    }
+}
+
+.page-img {
+    margin-bottom: 35px;
+    overflow: hidden;
+    border-radius: 0px;
+
+    img {
+        width: 100%;
+    }
+}
+
+.page-single {
+    margin-bottom: 30px;
+}
+
+.service-feature {
+    &-wrap {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+
+        @include sm {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+    background-color: $white-color;
+    padding: 20px 20px 20px 70px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+
+    .box-icon {
+        background: $smoke-color2;
+        @include equal-size-lineHeight(80px);
+        text-align: center;
+        border-radius: 99px;
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        z-index: 2;
+
+        &:after {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            background-color: $theme-color;
+            border-radius: inherit;
+            z-index: -1;
+        }
+    }
+
+    .box-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        margin-top: -0.3em;
+    }
+}
+
+.checklist li {
+	font-size: 18px;
+}

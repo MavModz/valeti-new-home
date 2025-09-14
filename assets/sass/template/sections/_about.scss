@@ -1,0 +1,313 @@
+/* About 1 ---------------------------------- */
+
+.about-logo-wrap-2 {
+    position: absolute;
+    right: 198px;
+    z-index: 2;
+    top: 50px;
+    height: 150px;
+    width: 150px;
+    background: var(--white-color);
+    border-radius: 50%;
+    
+    .logo-icon-wrap {
+        background: var(--white-color);
+        border-radius: 50%;
+        .logo-icon-wrap__text {
+            color: var(--gray-color);
+        }
+    }
+}
+
+
+.img-box1.about-1 {
+    position: relative;
+    display: flex;
+    gap: 24px;
+    img {
+        border-radius: 24px;
+    }
+    .about-left {
+        display: flex;
+        flex-direction: column;
+        text-align: end;
+        gap: 24px;
+        .img-box.small {
+            max-width: 172px;
+            max-height: 172px;
+            margin-left: auto;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .about-right {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        justify-content: end;
+        .img-box.small {
+            max-height: 172px;
+            max-width: 172px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        .img-box.big {
+            max-width: 250px;
+            max-height: 262px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+
+.about-1-item {
+    .icon {
+        height: 60px;
+        width: 60px;
+        line-height: 60px;
+        text-align: center;
+        background: var(--smoke-color);
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+}
+
+.about-bottom-wrap {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.about1-call-wrapper {
+    display: flex;
+    gap: 10px;
+    .icon {
+        height: 56px;
+        width: 56px;
+        text-align: center;
+        line-height: 56px;
+        border-radius: 50%;
+        background: var(--smoke-color);
+        font-size: 20px;
+        color: var(--theme-color);
+    }
+    .content {
+        p {
+            margin: 0px;
+            font-size: 18px;
+            color: var(--black-color);
+        }
+        .link {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--black-color);
+            &:hover {
+                color: var(--theme-color);
+            }
+        }
+    }
+}
+
+.about-bottom-1 .th-btn {
+    border-color: var(--theme-color);
+    color: var(--theme-color);
+
+    &:hover {
+        color: var(--white-color);
+    }
+}
+
+@include ml {
+    .about-logo-wrap-2 {
+        right: 90px;
+        top: 2px;
+    }
+}
+
+@include sm {
+    .about-logo-wrap-2 {
+        display: none;
+    }
+}
+
+@include vxs {
+    .img-box1.about-1 {
+        flex-direction: column;
+        justify-content: start;
+    }
+    .img-box1.about-1 .about-left {
+        text-align: start;
+    }
+    .img-box1.about-1 .about-left .img-box.small {
+        max-height: 100%;
+        max-width: 100%;
+    }
+    .img-box1.about-1 .about-right .img-box.small {
+        max-height: 100%;
+        max-width: 100%;
+    }
+    .img-box1.about-1 .about-right .img-box.big {
+        max-height: 100%;
+        max-width: 100%;
+    }
+    .img-box1.about-1 img {
+        width: 100%;
+    }
+}
+
+/* About 1.1 ---------------------------------- */
+.img-box1.about-2 {
+	display: flex;
+	gap: 25px;
+    position: relative;
+    .img3 {
+    position: absolute;
+    left: 4%;
+    top: 79%;
+  }
+}
+.client-bottom-wrap {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    .client-wrap {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        .thumb {
+            flex: 1;
+            height: 56px;
+            width: 56px;
+            border-radius: 50%;
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+        .text-wrap {
+            .box-title {
+                font-size: 18px;
+                margin-bottom: 0;
+                font-weight: 500;
+            }
+            p {
+                margin: 0;
+                line-height: 1.4;
+            }
+        }
+    }
+}
+
+
+.counter-card-wrap.style-2-inner {
+    margin: 50px 0 48px;
+    .counter-card .box-icon {
+        background: transparent;
+        border-color: var(--theme-color);
+        position: relative;
+        &:before {
+            content: "";
+            position: absolute;
+            background: var(--theme-color);
+            width: 100%;
+            height: 100%;
+            border-radius: 30px 0 0 30px;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            opacity: .2;
+        }
+    }
+    .counter-card .media-body {
+        .box-text {
+            color: var(--body-color);
+            font-size: 16px;
+            line-height: 1;
+            margin-top: -.1em;
+        }
+        .counter-number {
+            color: var(--title-color);
+        }
+        .box-number {
+            line-height: .9;
+            font-size: 52px;
+            margin-bottom: 11px;
+            margin-top: -.22em;
+            .plus-simple {
+                color: var(--theme-color);
+            }
+        }
+    }
+}
+@media (max-width: 1550px) {
+    .counter-card-wrap.style-2-inner {
+        padding: 0;
+    }
+}
+@include ml {
+    .counter-card-wrap.style-2-inner {
+        margin: 50px 0 0px;
+    }.counter-card-wrap.style-2-inner .counter-card .media-body .box-number {
+        font-size: 45px;
+        margin-bottom: 10px;
+    }
+}
+@include xl {
+    .img-box1.about-2 .img3 {
+        left: 0%;
+        top: 70%;
+    }
+}
+@include lg {
+    .img-box1.about-2 {
+        justify-content: end;
+    }
+    .img-box1.about-2 .img3 {
+        top: 38%;
+    }
+}
+@include md {
+    .img-box1.about-2 .img3 {
+        top: 56%;
+        width: 234px;
+    }
+}
+@include sm {
+    .img-box1.about-2 .img3 {
+        top: 56%;
+        width: 180px;
+    }
+}
+@include xs {
+    .img-box1.about-2 .img3 {
+        top: 56%;
+        width: 150px;
+    }
+    .counter-card-wrap.style-2-inner .counter-card .media-body .box-number {
+        font-size: 40px;
+        margin-bottom: 9px;
+    }
+    .img-box1.about-2 {
+        gap: 10px;
+    }
+}
+@include vxs {
+    .img-box1.about-2 .img3 {
+        top: 56%;
+        width: 130px;
+    }
+}

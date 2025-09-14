@@ -1,0 +1,288 @@
+/* Why 1 ---------------------------------- */
+.why-sec-1 {
+    position: relative;
+    z-index: 2;
+    &:before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        background: var(--gray-color);
+        z-index: -1;
+        opacity: .7;
+    }
+}
+
+.why-right-review-wrap {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    .trust-content {
+        display: flex;
+        gap: 10px;
+    }
+    .trust-content .icon i {
+        color: #09B579;
+        font-size: 24px;
+    }
+    .trust-content .box-title {
+        color: var(--white-color);
+        margin: 0;
+    }
+    .client {
+        display: flex;
+        gap: 11px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .client .content .th-social {
+        line-height: 1;
+        i {
+            color: var(--yellow-color);
+            font-size: 12px;
+        }
+    }
+    .client .content .review-title {
+        color: var(--white-color);
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0;
+    }
+}
+
+.why-card-1 {
+    background: var(--white-color);
+    border-radius: 16px;
+    text-align: center;
+    padding: 75px 60px 60px;
+    position: relative;
+    &:hover {
+        .hover-icon {
+            opacity: 1;
+            visibility: visible;
+        }
+        .why-card-1__icon img{
+            transform: rotateY(180deg);
+        }
+    }
+    .hover-icon {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+        transition-delay: 0.3s
+    }
+    &__icon {
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        img {
+            transition: 0.4s ease-in-out;
+        }
+        &:before {
+            content: "";
+            position: absolute;
+            height: 80px;
+            width: 80px;
+            border-radius: 6px;
+            background: #FDEDEC;
+            z-index: -1;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -15px;
+        }
+    }
+    &__content {
+        margin-bottom: 40px;
+        .box-title {
+            margin-bottom: 8px;
+        }
+        .box-text {
+            color: var(--title-color);
+        }
+    }
+}
+@include xl {
+    .why-card-1 {
+        padding: 50px 30px 30px;
+    }
+}
+@include lg {
+    .why-right-review-wrap {
+        justify-content: center;
+    }
+}
+@include md {
+    .why-card-1 {
+        padding: 55px 40px 40px;
+    }
+}
+
+@include xs {
+    .why-card-1 {
+        padding: 40px 25px 25px;
+    }
+}
+
+/* Why 2 ---------------------------------- */
+.why-card-1.style-2 {
+    position: relative;
+	text-align: start;
+	padding: 40px;
+	background-size: cover !important;
+	background-repeat: no-repeat;
+	background-position: center center;
+	overflow: hidden;
+	z-index: 1;
+    border: 1px solid #D8DDE161;
+    background:  linear-gradient(to right, var(--white-color), var(--smoke-color));
+    @include vxs {
+        padding: 25px;
+    }
+    &::before {
+        content: "";
+        position: absolute;
+        inset:  0;
+        padding: 1px;
+        background: -webkit-linear-gradient(right, transparent, var(--th-border-color));
+        background:  linear-gradient(to left, transparent, #D8DDE133);
+        mask-composite: add, add;
+         -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: -1;
+        opacity: .99;
+    }
+    .why-card-1__icon {
+        text-align: start;
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+        background: #FDEDEC;
+        text-align: center;
+        line-height: 80px;
+        margin-bottom: 25px;
+        &:before {
+            left: 0;
+            transform: inherit;
+            opacity: 0;
+        }
+    }
+    .box-title {
+        margin-bottom: 15px;
+        width: 50%;
+    }
+    .count {
+        position: absolute;
+        right: 40px;
+        font-size: 57px;
+        color: var(--body-color);
+        opacity: .2;
+        top: 37px;
+    }
+}
+
+@media (max-width: 1600px) {
+    .why-card-1.style-2 .box-title {
+        width: 75%;
+    }
+}
+
+@include xl {
+    .why-card-1.style-2 .box-title {
+        width: 100%;
+    }
+
+}
+
+@include vxs {
+    .why-card-1.style-2 .count {
+        font-size: 47px;
+        right: 10px;
+    }
+}
+
+/* Why 3 ---------------------------------- */
+
+.why-card-1.style-2.style-3 {
+    background-color: transparent;
+    padding: 25px;
+    border: 0;
+    &:hover {
+        .why-card-1__icon {
+            background: var(--theme-color);
+            img {
+                filter: brightness(0) invert(1);;
+            }
+        }
+
+    }
+    &::before {
+        opacity: 0;
+    }
+    .count {
+        top: 4px;
+        right: 5px;
+    }
+    .why-card-1__content {
+        margin-bottom: 70px;
+        .box-title {
+            width: 100%;
+        }
+    }
+    .why-card-1__icon {
+        height: 64px;
+        width: 64px;
+        background: var(--smoke-color);
+        line-height: 64px;
+        img {
+            width: 38px;
+        }
+    }
+}
+
+
+@include xxl {
+    .why-card-1.style-2.style-3 .why-card-1__content .box-title {
+        font-size: 22px;
+    }
+}
+@include vxs {
+.why-card-1.style-2.style-3 .why-card-1__content .box-title {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 320px) {
+    .why-card-1.style-2.style-3 .count {
+        top: 24px;
+        right: 40px;
+    }
+}
+
+/* Why 4 Inner ---------------------------------- */
+
+.why-card-1.style-2.style-4 {
+    border: 0;
+    background: var(--white-color);
+    padding: 28px;
+    .box-title {
+        width: 100%;
+        margin-bottom: 7px;
+    }
+    .why-card-1__icon {
+        background: var(--smoke-color);
+        height: 64px;
+        width: 64px;
+        line-height: 64px;
+        margin-bottom: 35px;
+        img {
+            width: 39px;
+        }
+    }
+}

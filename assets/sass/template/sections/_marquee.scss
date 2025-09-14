@@ -1,0 +1,137 @@
+/* Marquee CSS ---------------------------------- */
+.marquee-section {
+    position: relative;
+}
+
+.marquee-wrapper {
+    background: transparent;
+    padding: 16px 0 0px;
+
+    .marquee {
+        position: relative;
+        --duration: 120s;
+        --gap: 0px;
+        display: -ms-flexbox;
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        gap: var(--gap);
+
+        &:first-child {
+            --duration: 100s;
+        }
+
+        &:last-child {
+            --duration: 80s;
+        }
+
+        &.marquee--reverse {
+            .marquee-group {
+                animation-direction: reverse;
+            }
+        }
+
+        .marquee-group {
+            flex-shrink: 0;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: var(--gap);
+            min-width: 100%;
+            animation: scroll var(--duration) linear infinite;
+
+            .text {
+                font-family: var(--title-font);
+                font-weight: 300;
+                font-size: 46px;
+                line-height: 40px;
+                text-align: center;
+                letter-spacing: 0.01em;
+                text-transform: capitalize;
+                color: var(--grey-color);
+                padding: 6px 20px;
+                margin: 8px 5px;
+                display: inline-block;
+                cursor: pointer;
+                transition: all 0.4s ease-in-out;
+
+                a {
+                    color: var(--title-color);
+
+                    &:hover {
+                        color: var(--theme-color);
+                    }
+                }
+
+                // &:nth-child(2) {
+                //     img {
+                //         filter: brightness(0) invert(1);
+                //     }
+                // }
+
+                // &:nth-child(4) {
+                //     img {
+                //         filter: brightness(0) invert(1);
+                //     }
+                // }
+
+                // &:nth-child(6) {
+                //     img {
+                //         filter: brightness(0) invert(1);
+                //     }
+                // }
+
+                // &:nth-child(8) {
+                //     img {
+                //         filter: brightness(0) invert(1);
+                //     }
+                // }
+
+                // &:nth-child(10) {
+                //     img {
+                //         filter: brightness(0) invert(1);
+                //     }
+                // }
+
+                // &:nth-child(12) {
+                //     img {
+                //         filter: brightness(0) invert(1);
+                //     }
+                // }
+
+                img {
+                    margin-right: 40px;
+                }
+            }
+        }
+    }
+}
+
+@keyframes scroll {
+    0% {
+      -webkit-transform: translateX(0);
+              transform: translateX(0);
+    }
+    100% {
+      -webkit-transform: translateX(calc(-100% - var(--gap)));
+              transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+
+  @include sm {
+    .marquee-wrapper .marquee .marquee-group .text {
+        padding-bottom: 0;
+    }
+  }
+
+//   Inner page 
+
+.marquee-section-3 {
+	padding-bottom: 250px;
+	z-index: 1;
+    @include md {
+        padding-bottom: 60px;
+    }
+}

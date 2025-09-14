@@ -1,0 +1,112 @@
+/* Agencies  ---------------------------------- */
+
+.agencies-card {
+    border-radius: 16px;
+    background: var(--smoke-color);
+    overflow: hidden;
+    &:hover {
+      .agencies-content .brand-icon img {
+        transform: rotateY(180deg);
+      }
+      .agencies-img img {
+        transform: scale(1.1);
+      }
+    }
+    .agencies-img {
+        border-radius: 16px 16px 0 0;
+        margin-bottom: 40px;
+        overflow: hidden;
+        img {
+            height: 100%;
+            width: 100%;
+            border-radius: 16px 16px 0 0;
+            transition: .4s;
+        }
+    }
+    .agencies-content {
+        border-bottom: 1px solid var(--th-border-color);
+        margin-bottom: 30px;
+        padding: 0 30px;
+        position: relative;
+        .brand-icon {
+            height: 100px;
+            width: 100px;
+            text-align: center;
+            line-height: 100px;
+            background: var(--white-color);
+            border-radius: 100%;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            position: absolute;
+            right: 30px;
+            top: -79px;
+            img {
+              transition: .4s;
+            }
+        }
+        .box-text {
+            display: flex;
+            gap: 10px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .agencies-list {
+            margin: 0;
+            padding: 0;
+            padding-bottom: 20px;
+            li {
+                list-style: none;
+                display: flex;
+                gap: 60px;
+                p {
+                  font-size: 16px;
+                  font-weight: 500;
+                  margin-bottom: 10px;
+                  &:first-child {
+                    width: 20%;
+                  }
+                  a {
+                    color: var(--body-color);
+                    &:hover {
+                      color: var(--theme-color);
+                    }
+                  }
+               }
+            }
+        }
+    }
+    .agencies-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 30px 30px 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+      .th-social {
+        flex: 1;
+        display: flex;
+        gap:6px;
+        a {
+          --icon-size: 40px;
+          border-radius: 50%;
+          color: var(--theme-color);
+          background: var(--white-color);
+          border: 0;
+          &:hover {
+            background: var(--theme-color);
+            color: var(--white-color);
+          }
+        }
+      }
+   }
+}
+
+@include vxs {
+  .agencies-card .agencies-bottom {
+    padding: 0 20px 20px 20px;
+  }
+  .agencies-card .agencies-content {
+    padding: 0 20px;
+  }
+  .agencies-card .agencies-content .brand-icon {
+    right: 20px;
+  }
+}

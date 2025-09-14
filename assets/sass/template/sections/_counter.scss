@@ -1,0 +1,234 @@
+/* Counter 1 ---------------------------------- */
+.counter-sec1 {
+    position: relative;
+    z-index: 2;
+    &:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: var(--gray-color);
+        opacity: 1;
+        -webkit-transition: .4s;
+        transition: .3s;
+        z-index: -1;
+        background: linear-gradient(to bottom, transparent, var(--gray-color)); 
+    }
+    &:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: var(--gray-color);
+        opacity: .4;
+        transition: .3s;
+        z-index: -1; 
+    }
+}
+
+.counter-card {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+
+    &-wrap {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        border-radius: 0px;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        padding: 8px 0;
+
+        @media (max-width: 1550px) {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+
+        .divider {
+            width: 1px;
+            height: 60px;
+            background-color: #ffffff28;
+            border: 1px dashed var(--white-color);
+
+            @include sm {
+                display: none;
+            }
+        }
+
+        .divider:last-of-type {
+            display: none;
+        }
+    }
+
+    .box-number {
+        color: var(--white-color);
+        font-weight: 700;
+        font-family: var(--title-font);
+        font-size: 50px;
+        margin-bottom: 3px;
+        line-height: 1;
+
+
+        .counter-number {
+            font-weight: var(--title-font);
+        }
+
+        @include lg {
+            font-size: 30px;
+        }
+
+        @include xs {
+            font-size: 25px;
+        }
+
+        .plus-simple {
+            font-weight: 500;
+        }
+    }
+
+    .box-text {
+        font-size: 18px;
+        color: var(--white-color);
+    }
+
+    .media-body {
+        flex: 1;
+    }
+}
+
+@include xxl {
+    .counter-card {
+        gap: 15px;
+    }
+    .counter-card .box-number {
+        font-size: 40px;
+    }
+    .counter-card .box-text {
+        font-size: 15px;
+    }
+}
+
+
+@include lg {
+    .counter-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+
+        .box-number {
+            margin-bottom: 5px;
+        }
+    }
+}
+
+
+@include md {
+    .counter-card {
+        &-wrap {
+            flex-wrap: wrap;
+            position: relative;
+            row-gap: 40px;
+
+            @include vxs {
+                flex-direction: column;
+            }
+            
+            .divider:nth-child(4) {
+                display: none;
+            }
+        }
+
+        flex: 45%;
+        margin-bottom: 0px;
+        gap: 15px;
+        &:nth-child(3),
+        &:nth-child(4) {
+            margin-bottom: 0px;
+        }
+        .divider:nth-child(4) {
+            display: none;
+        }
+
+    }
+}
+
+// @include sm {
+//     .counter-card {
+//         &-wrap {
+//             flex-wrap: wrap;
+//             position: relative;
+//             row-gap: 40px;
+
+//             @include vxs {
+//                 flex-direction: column;
+//             }
+//         }
+
+//         flex: 50%;
+//         margin-bottom: 0px;
+//         gap: 15px;
+//         &:nth-child(3),
+//         &:nth-child(4) {
+//             margin-bottom: 0px;
+//         }
+
+//     }
+// }
+
+
+@include xs {
+    .counter-card {
+        flex: 100%;
+    }
+}
+
+
+
+@include vxs {
+    .counter-card {
+        margin-bottom: 0px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &:nth-child(3) {
+            margin-bottom: 0px;
+        }
+    }
+}
+
+/* Counter  2 ---------------------------------- */
+.counter-sec2 {
+    background: var(--theme-color);
+}
+
+.counter-card-wrap {
+    &.style-2 {
+        border-radius: 0;
+        background: transparent;
+        margin-top: -12px;
+
+        .box-icon {
+            background: transparent;
+            border-right: 2px solid var(--theme-color);
+            position: relative;
+
+            &::before {
+                content: "";
+                position: absolute;
+                background: var(--theme-color);
+                opacity: .20;
+                width: 100%;
+                height: 100%;
+                right: 0;
+                border-radius: 30px 0 0 30px;
+            }
+        }
+    }
+}
+

@@ -1,0 +1,401 @@
+.sec-title {
+    margin-top: -0.2em;
+    text-transform: capitalize;
+    font-size: 40px;
+}
+.title-area:has(.sec-title) {
+	margin-top: -.7em;
+}
+.sub-title {
+    font-family: var(--body-font);
+    color: var(--theme-color);
+    margin-bottom: 9px;
+    position: relative;
+    margin-top: 4px;
+    padding-top: 0;
+    letter-spacing: normal;
+    font-size: 16px;
+    text-transform: capitalize;
+    font-weight: 600;
+    display: inline-block;
+
+    .double-line:before,
+    &:before,
+    .double-line:after,
+    &:after {
+        position: absolute;
+        content: "";
+        height: 2px;
+        transform: translate(100%, 0);
+        top: 50%;
+        right: -10px;
+    }
+
+    .double-line:before,
+    .double-line:after {
+        right: auto;
+        left: -10px;
+        transform: translate(-100%, 0);
+    }
+
+    .double-line:after,
+    &:after {
+        margin-top: -5px;
+        width: 12px;
+        background-color: var(--title-color);
+    }
+
+    .double-line:before,
+    &:before {
+        width: 20px;
+        background-color: var(--theme-color);
+    }
+
+    &:has(img) {
+        margin-top: 0;
+    }
+
+    img {
+        margin: -11px 10px 0 0;
+    }
+    
+    &.style-2 {
+        color: var(--theme-color);
+        font-size: 20px;
+        text-transform: capitalize;
+        &::before {
+            display: none;
+        }
+        &::after {
+            display: none;
+        }
+        img {
+            margin: 0px 8px 0 0;
+        }
+    }
+    &.color-theme {
+        color: var(--theme-color);
+    }
+}
+
+
+@include lg {
+    .title-area.text-center.text-xl-start .sub-title {
+        justify-content: center;
+    }
+}
+
+.box-title {
+    font-size: 24px;
+    line-height: 1.417;
+    font-weight: 600;
+    margin-top: -0.32em;
+
+    a {
+        color: inherit;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+.box-subtitle {
+    margin-bottom: 8px;
+}
+
+.box-title2 {
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 700;
+    margin-top: -0.35em;
+
+    a {
+        color: inherit;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+.title-area {
+    margin-bottom: calc(var(--section-title-space) - 2px);
+    position: relative;
+    z-index: 1;
+
+    &.mb-0 {
+        .sec-title {
+            margin-bottom: -0.24em;
+        }
+    }
+
+    .th-btn {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    &.text-left {
+        .sub-title {
+            margin-left: 31px;
+        }
+    }
+
+    .big-heading {
+        position: absolute;
+        font-size: 200px;
+        width: 200%;
+        color: #ffffff08;
+        top: -56px;
+        z-index: -1;
+        left: 50%;
+        transform: translateX(-50%);
+        &.left {
+            z-index: -7;
+            left: 59%;
+        }
+    }
+
+    &.text-center .sub-title {
+        justify-content: center;
+    }
+    &.white {
+        .sub-title::after {
+            background: var(--white-color);
+        }
+        .double-line::after {
+            background: var(--white-color);
+        }
+    }
+}
+
+@include sm {
+    .sec-title {
+        font-size: 35px;
+    }
+}
+.title-area.white-style .sub-title::before {
+    background: var(--white-color);
+}
+.title-area.white-style .sub-title::after {
+    background: var(--theme-color);
+}
+.title-area.white-style .double-line::before {
+    background: var(--white-color);
+}
+.title-area.white-style .double-line::after {
+    background: var(--theme-color);
+}
+
+.mb-32 {
+    margin-bottom: 32px;
+}
+
+hr.title-line {
+    margin-top: 0;
+    background-color: $border-color;
+    opacity: 1;
+}
+
+.sec-btn {
+    text-align: center;
+}
+
+.sec-btn,
+.title-line {
+    margin-bottom: var(--section-title-space);
+}
+
+.shadow-title {
+    font-family: $title-font;
+    font-size: 74px;
+    font-weight: 900;
+    line-height: 1;
+    background-image: linear-gradient(180deg, rgba(226, 232, 250, 0.7) 0%, rgba(226, 232, 250, 0) 88.54%);
+    background-clip: text;
+    text-fill-color: transparent;
+    margin: -0.55em 0 -0.45em -0.25em;
+
+    &.color2 {
+        background-image: linear-gradient(180deg, #232C47 0%, rgba(20, 29, 56, 0) 91.15%);
+    }
+
+    &.color3 {
+        background-image: linear-gradient(180deg, #E0E0E0 0%, rgba(220, 214, 214, 0) 93.75%);
+    }
+}
+
+.title-area2 {
+    padding: 50px 100px;
+
+    .subtitle {
+        color: $white-color;
+        text-transform: uppercase;
+        margin-top: -0.4em;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .title {
+        color: $white-color;
+        max-width: 430px;
+        margin-bottom: -0.26em;
+    }
+}
+
+@media (max-width: 1700px) {
+    .title-area2 {
+        padding: 50px 50px;
+    }
+
+    .title-area .big-heading.left {
+        font-size: 132px;
+        top: -45px;
+        left: 89%;
+    }
+
+}
+
+@media (max-width: 1600px) {
+    .title-area .big-heading.right {
+        font-size: 150px;
+        top: -56px;
+        left: 80%;
+    }
+    .title-area .big-heading.left {
+        font-size: 97px;
+        top: -25px;
+        left: 96%;
+    }
+}
+
+@include ml {
+    .title-area .big-heading {
+        font-size: 150px;
+        top: -45px;
+    }
+}
+
+@include lg {
+    .sub-title {
+        margin-bottom: 20px;
+    }
+
+    .shadow-title {
+        font-size: 64px;
+    }
+
+    .title-area,
+    .sec-title {
+        --section-title-space: 60px;
+
+        &.mb-45 {
+            margin-bottom: 36px;
+        }
+
+        &.mb-50 {
+            margin-bottom: 40px;
+        }
+    }
+
+    .sec-btn,
+    .title-line {
+        --section-title-space: 55px;
+    }
+
+    .title-area2 .title {
+        max-width: 300px;
+    }
+    .title-area .big-heading {
+        font-size: 115px;
+        top: -43px;
+    }
+    .title-area .big-heading.left {
+        font-size: 75px;
+        top: -13px;
+        left: 97%;
+    }
+}
+
+@include md {
+    .shadow-title {
+        font-size: 60px;
+    }
+
+    .title-area,
+    .sec-title {
+        --section-title-space: 50px;
+
+        &.mb-45 {
+            margin-bottom: 35px;
+        }
+    }
+
+    .sec-btn,
+    .title-line {
+        --section-title-space: 50px;
+    }
+
+    .sub-title {
+        &.h4 {
+            font-size: 22px;
+        }
+    }
+    .title-area .big-heading {
+        font-size: 98px;
+        top: -36px;
+    }
+}
+
+@include sm {
+    .title-area2 {
+        text-align: center;
+
+        .title {
+            max-width: 100%;
+        }
+    }
+    .title-area .big-heading {
+        font-size: 80px;
+        top: -40px;
+    }
+}
+
+@include xs {
+    .shadow-title {
+        font-size: 52px;
+    }
+    .title-area .big-heading {
+        font-size: 55px;
+        top: -12px;
+    }
+    .title-area .big-heading.left {
+        font-size: 55px;
+        top: -6px;
+        left: 100%;
+    }
+    .sec-title {
+        font-size: 30px;
+    }
+}
+
+@include vxs {
+    .shadow-title {
+        font-size: 40px;
+    }
+
+    .title-area2 {
+        padding: 40px 20px;
+    }
+    .title-area .big-heading {
+        font-size: 42px;
+        top: 0px;
+    }
+    .title-area .big-heading.left {
+        font-size: 42px;
+        top: 0px;
+    }
+    
+    .sec-title {
+        font-size: 28px;
+    }
+}

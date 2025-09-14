@@ -1,0 +1,342 @@
+/* Best Price Car 1---------------------------------- */
+
+.best-price-car-sec-1 {
+    position: relative;
+}
+
+.best-price-car-sec-1 {
+    &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        background-color: var(--smoke-color);
+        z-index: -1;
+        width: 1560px;
+        margin: auto;
+        top: 0;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 25%;
+        height: 100%;
+        z-index: -1;
+        background: #EDEDED;
+        @include ml {
+            width: 30%;
+        }
+        @include lg {
+            width: 40%;
+        }
+        @include md {
+            width: 43%;
+        }
+        @include sm {
+            width: 70%;
+        }
+    }
+}
+
+.slider-area.best-price-car-content-slider-area {
+    &::before {
+        content: "";
+        position: absolute;
+        height: 2px;
+        background: var(--th-border-color);
+        width: 1560px;
+        margin: auto;
+        inset: 0;
+        margin-left: -120px;
+        top: -188px;
+    }
+}
+
+.slider-arrow.best-price-arrow {
+	background: var(--theme-color);
+	border-color: var(--white-color);
+    color: var(--white-color);
+    &:hover {
+        background-color: var(--title-color);
+    }
+}
+
+.best-price-car-gallery-slider {
+    .swiper-slide.swiper-slide-visible {
+        &.swiper-slide-active {
+            .best-price-car-gallery-1 {
+                transform: scale(1.4);
+                @include md {
+                    transform: scale(1);
+                }
+            }
+        }
+
+    }
+}
+
+.best-price-car-gallery-1 {
+    text-align: center;
+    transition: .4s;
+    margin: 45px 60px;
+    @media (max-width: 1600px) {
+        margin: 45px 40px
+    }
+    @media (max-width: 1400px) {
+        margin: 45px 30px;
+    }
+    @include md {
+        margin: 15px 30px;
+    }
+    @include xs {
+        margin: 0px 30px 10px;
+    }
+}
+
+@media (max-width: 1399px) {
+    .slider-arrow.best-price-arrow {
+      --pos-x: 20px;
+    }
+}
+@media (max-width: 1299px) {
+    .slider-arrow.best-price-arrow {
+      display: block;
+    }
+}
+
+
+.feature-list-1.best-price-car-content {
+    background: transparent;
+    border: 0;
+    text-align: center;
+    box-shadow: none;
+
+    .box-title-price {
+        color: var(--theme-color);
+        margin-bottom: 28px;
+        background: var(--white-color);
+        display: inline-block;
+        padding: 3px 21px;
+        opacity: 0;
+        transition: .4s;
+    }
+
+    .car-bottom .link-btn {
+        opacity: 0;
+    }
+}
+
+.best-price-car-content-slider-area .swiper-slide.swiper-slide-active {
+    margin-top: -0px;
+
+    .feature-list-1.best-price-car-content {
+        .box-title-price {
+            opacity: 1;
+        }
+
+        .media-body .box-title {
+            font-size: 34px;
+            @include md {
+                font-size: 28px;
+            }
+        }
+
+        .car-bottom .link-btn {
+            opacity: 1;
+        }
+    }
+}
+
+/* Best Price Car style-2 ---------------------------------- */
+
+.best-price-car-sec-1.style-2 {
+    &::before {
+        display: none;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 120px;
+        transform: translateX(-50%);
+        width: 33%;
+        height: 43%;
+        z-index: -1;
+        background: var(--theme-color);
+        opacity: .09;
+        border-radius: 30px
+    }
+
+    .slider-area.best-price-car-content-slider-area::before {
+        display: none;
+    }
+
+    .feature-list-1 .media-body {
+        border-bottom: 0;
+    }
+
+    .feature-list-1.best-price-car-content {
+        opacity: 0;
+        visibility: hidden;
+        box-shadow: none;
+
+        .box-title-price {
+            opacity: 0;
+        }
+    }
+
+    .best-price-car-content-slider-area .swiper-slide.swiper-slide-visible.swiper-slide-active {
+        .feature-list-1.best-price-car-content {
+            opacity: 1;
+            visibility: visible;
+
+            .box-title-price {
+                opacity: 1;
+            }
+
+            .car-bottom .link-btn {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+
+
+.slider-arrow.best-price-arrow{
+    left: var(--pos-x, 10%);
+    &.slider-next {
+        right: var(--pos-x, 10%);
+        left: auto;
+    }
+}
+
+
+
+.best-price-car-gallery-1.style-2 img {
+	opacity: .4;
+    transition: .3s;
+    @include md {
+        opacity: 1;
+    }
+}
+.feature-list-1.best-price-car-content.bike-bestt {
+    padding-bottom: 0;
+    .car-content {
+        padding: 20px 10px 0px 10px;
+    }
+}
+
+.slider-arrow.slider-prev.best_price_arrow-2 {
+    --pos-x: 8%;
+}
+.slider-arrow.slider-next.best_price_arrow-2 {
+    --pos-x: 8%;
+}
+
+@media (max-width: 1500px) {
+    .slider-arrow.slider-prev.best_price_arrow-2 {
+        --pos-x: 0%;
+    }
+    .slider-arrow.slider-next.best_price_arrow-2 {
+        --pos-x: 0%;
+    }
+}
+
+@media (max-width: 1299px) {
+    .slider-arrow.best_price_arrow-2 {
+      display: block;
+    }
+}
+@media (max-width: 1199px) {
+    .slider-arrow.best_price_arrow-2 {
+      --pos-x: 50px;
+    }
+}
+@media (max-width: 999px) {
+    .slider-arrow.best_price_arrow-2 {
+      --pos-x: 20px;
+    }
+}
+
+.best-price-car-gallery-slider.style-2 .swiper-slide.swiper-slide-active {
+    .best-price-car-gallery-1 {
+        transform: scale(1.4);
+        @include sm {
+            transform: scale(1.2);
+        }
+        @include xs {
+            transform: scale(1);
+        }
+        img {
+            opacity: 1;
+        }
+    }
+}
+@include ml {
+    .best-price-car-sec-1.style-2::after {
+        height: 41%;
+    }
+}
+@include xl {
+    .best-price-car-sec-1.style-2::after {
+        height: 38%;
+    }
+}
+@include lg {
+    .best-price-car-sec-1.style-2::after {
+        height: 46%;
+    }
+    .feature-list-1.best-price-car-content.bike-best .car-content {
+        padding: 60px 10px 0px 10px;
+    }
+}
+@include md {
+    .best-price-car-sec-1.style-2::after {
+        width: 43%;
+        height: 42%;
+        border-radius: 30px;
+    }
+    .feature-list-1.best-price-car-content.bike-best .car-content {
+        padding: 60px 10px 0px 10px;
+    }
+    .best-price-car-gallery-1.style-2 {
+        margin: 0px 20px 30px;
+    }
+}
+@include sm {
+    .best-price-car-sec-1.style-2::after {
+        height: 39%;
+        border-radius: 30px;
+    }
+}
+@include xs {
+    .best-price-car-sec-1.style-2::after {
+        height: 35%;
+        border-radius: 10px;
+    }
+    .feature-list-1.best-price-car-content.bike-best .car-content {
+        padding: 10px 10px 0px 10px;
+    }
+}
+@media (max-width: 450px) {
+    .best-price-car-sec-1.style-2::after {
+        height: 33%;
+        border-radius: 10px;
+    }
+    .feature-list-1.best-price-car-content.bike-best .car-content {
+        padding: 0px 10px 0px 10px;
+    }
+}
+@include vxs {
+    .best-price-car-sec-1.style-2::after {
+        height: 29%;
+        border-radius: 10px;
+    }
+}
+
