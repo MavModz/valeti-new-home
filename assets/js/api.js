@@ -5,8 +5,8 @@
 
 class PropertyAPI {
     constructor() {
-        // this.baseURL = 'https://valeti-444t.vercel.app/api';
-        this.baseURL = 'http://localhost:5000/api';
+        this.baseURL = 'https://valeti-444t.vercel.app/api';
+        // this.baseURL = 'http://localhost:5000/api';
         this.endpoints = {
             properties: '/properties',
             propertyDetails: '/properties',
