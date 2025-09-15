@@ -8131,6 +8131,14 @@ ol.wp-block-rss {
   margin-bottom: 15px;
 }
 
+.about-logo img {
+  max-width: 199px;
+  max-height: 56px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
 .th-widget-about .about-logo {
   margin-bottom: 52px;
 }
