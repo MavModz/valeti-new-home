@@ -30925,6 +30925,10 @@ input {
   margin-bottom: -3rem;
 }
 
+.property-values-sec-2 {
+  background-color: #0e0e0f;
+}
+
 .space,
 .space-top {
   padding-top: var(--section-space);
@@ -31150,6 +31154,50 @@ input {
     gap: 15px;
     text-align: center;
   }
+}
+
+/* Avatar Stack Styling */
+.avatar-stack {
+  display: flex !important;
+  align-items: center;
+  width: 194px;
+  height: 64px;
+  position: relative;
+}
+
+.avatar-stack .avatar-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  position: absolute;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-stack .avatar-img:nth-child(1) {
+  left: 0;
+  z-index: 5;
+}
+
+.avatar-stack .avatar-img:nth-child(2) {
+  left: 25px;
+  z-index: 4;
+}
+
+.avatar-stack .avatar-img:nth-child(3) {
+  left: 50px;
+  z-index: 3;
+}
+
+.avatar-stack .avatar-img:nth-child(4) {
+  left: 75px;
+  z-index: 2;
+}
+
+.avatar-stack .avatar-img:nth-child(5) {
+  left: 100px;
+  z-index: 1;
 }
 
 /*# sourceMappingURL=style.css.map */
