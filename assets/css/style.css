@@ -3452,7 +3452,7 @@ textarea.is-invalid {
 }
 
 .box-title a:hover {
-  color: var(--theme-color);
+  color: var(--white-color);
 }
 
 .box-subtitle {
