@@ -3452,7 +3452,7 @@ textarea.is-invalid {
 }
 
 .box-title a:hover {
-  color: var(--white-color);
+  color: var(--theme-color);
 }
 
 .box-subtitle {
@@ -4294,7 +4294,7 @@ hr.title-line {
 }
 
 .bg-smoke {
-  background-color: var(--smoke-color) !important;
+  background-color: var(--theme-color) !important;
 }
 
 .bg-smoke2 {
