@@ -461,10 +461,10 @@
     <div class="breadcumb-wrapper " data-bg-src="https://images.unsplash.com/photo-1706808849827-7366c098b317?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
         <div class="container">
             <div class="breadcumb-content">
-                <h1 class="breadcumb-title">Properties</h1>
+                <h1 class="breadcumb-title">Search</h1>
                 <ul class="breadcumb-menu">
                     <li><a href="index.html">Home</a></li>
-                    <li>Properties</li>
+                    <li>Search</li>
                 </ul>
             </div>
         </div>
@@ -483,11 +483,10 @@ Blog Area
                     <div class="col-md-auto">
                         <div class="sorting-filter-wrap fadeinup wow" data-wow-duration="1.5s" data-wow-delay="0.3s">
                             <div class="nav" role=tablist>
-                                <a class="active" href="#" id="tab-shop-list" data-bs-toggle="tab" data-bs-target="#tab-list" role="tab" aria-controls="tab-grid" aria-selected="false"><i class="fa-solid fa-list"></i></a>
-                                <a href="#" id="tab-shop-grid" data-bs-toggle="tab" data-bs-target="#tab-grid" role="tab" aria-controls="tab-grid" aria-selected="true"> <i class="fa-light fa-grid-2"></i></a>
+                                <a class="active" href="#" id="tab-shop-grid" data-bs-toggle="tab" data-bs-target="#tab-grid" role="tab" aria-controls="tab-grid" aria-selected="true"> <i class="fa-light fa-grid-2"></i></a>
                             </div>
                             <form class="woocommerce-ordering" method="get">
-                                <select name="orderby" class="orderby" aria-label="Shop order">
+                                <select id="sort-properties" name="orderby" class="orderby" aria-label="Shop order">
                                     <option value="menu_order" selected="selected">Default Sorting</option>
                                     <option value="popularity">Sort by popularity</option>
                                     <option value="rating">Sort by average rating</option>
@@ -503,8 +502,9 @@ Blog Area
 
             <div class="tab-content" id="nav-tabContent">
 
-                <div class="tab-pane fade" id="tab-grid" role="tabpanel" aria-labelledby="tab-shop-grid">
-                    <div class="row gy-40">
+                <div class="tab-pane fade active show" id="tab-grid" role="tabpanel" aria-labelledby="tab-shop-grid">
+                    <div id="loading-indicator" style="display:none"></div>
+                    <div class="row gy-40" id="properties-container">
 
                         <div class="col-xl-4 col-lg-6 col-md-6 fadeinup wow">
                             <div class="popular-list-1 grid-style">
@@ -1321,7 +1321,7 @@ Blog Area
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade active show" id="tab-list" role="tabpanel" aria-labelledby="tab-shop-list">
+                <div class="tab-pane fade" id="tab-list" role="tabpanel" aria-labelledby="tab-shop-list">
                     <div class="row gy-40 justify-content-center">
 
                         <div class="col-xl-8 col-lg-12">
@@ -1885,7 +1885,8 @@ Blog Area
                                 </div>
                                 <div class="widget  ">
                                     <h3 class="widget_title">Featured Listings</h3>
-                                    <div class="recent-post-wrap featured-listing">
+                                    <div id="featured-loading-indicator" style="display:none"></div>
+                                    <div class="recent-post-wrap featured-listing" id="featured-properties-container">
                                         <div class="recent-post">
                                             <div class="media-img">
                                                 <a href="property-details.html"><img src="assets/img/blog/featured-listing-sidebar-1-1.jpg" alt="Image"></a>
@@ -2062,33 +2063,37 @@ Blog Area
 ==============================--><!--==============================
 	Footer Area
 ==============================-->
-    <footer class="footer-wrapper footer-default">
+   <footer class="footer-wrapper footer-layout1">
+        <div class="footer-top-shape animation-infinite" data-bg-src="assets/img/icon/footer-top-shape.png"></div>
         <div class="widget-area">
             <div class="container">
                 <div class="footer-all-widget-wrapper">
                     <div class="footer-all-widget-item">
                         <div class="widget footer-widget">
+                            <h3 class="widget_title">About Valeti</h3>
                             <div class="th-widget-about">
-                                <div class="about-logo">
-                                    <a href="index.html"><img src="assets/img/logo-white.svg" alt="Piller-html"></a>
-                                </div>
-                                <p class="about-text">Pillar is a luxury to the resilience, adaptability, Spacious modern villa living room with centrally placed swimming pool blending indooroutdoor.</p>
+                                <p class="about-text">With over 24 years of experience in the construction industry, Valeti has built a reputation for excellence in both residential and commercial projects. Our journey began with 15 years of rigorous overseas experience, where we honed our expertise in designing and constructing buildings across diverse sectors.</p>
 
                                 <div class="footer-info-wrap">
                                     <div class="footer-info">
                                         <i class="fas fa-phone"></i>
-                                        <p class="info-box_link"><a href="tel:+00(123)456789012">+00 (123) 456 789 012</a></p>
+                                        <p class="info-box_link"><a href="tel:+03 8804 5757, ">+03 8804 5757, </a></p>
                                     </div>
                                     <div class="footer-info">
                                         <i class="fas fa-envelope"></i>
-                                        <p class="info-box_link"> <a href="mailto:infomail123@domain.com">infomail123@domain.com</a></p>
+                                        <p class="info-box_link"> <a href="mailto:Info@valeti.com.au">Info@valeti.com.au</a></p>
 
                                     </div>
                                     <div class="footer-info">
                                         <i class="fas fa-location-dot"></i>
-                                        <p class="info-box_link"><span>West 2nd lane, Inner circular road, New York City</span></p>
+                                        <p class="info-box_link"><span>142 High St, Cranbourne VIC 3977, Australia</span></p>
                                     </div>
                                 </div>
+
+                                <div class="about-logo">
+                                    <a href="index.html"><img src="assets/img/valeti-constructions-logo.png" alt="Piller-html"></a>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -2100,11 +2105,11 @@ Blog Area
                                         <h3 class="widget_title">Featured Houses</h3>
                                         <div class="menu-all-pages-container">
                                             <ul class="menu">
-                                                <li><a href="service.html">#Villa</a></li>
-                                                <li><a href="service.html">#Commercial</a></li>
-                                                <li><a href="service.html">#Farm Houses</a></li>
-                                                <li><a href="service.html">#Apartments</a></li>
-                                                <li><a href="service.html">#Apartments</a></li>
+                                                <li><a href="service.html">Standard Home Design</a></li>
+                                                <li><a href="service.html">Custom Homes</a></li>
+                                                <li><a href="service.html">Interiors</a></li>
+                                                <li><a href="service.html">Multi Unit Development</a></li>
+                                                <li><a href="service.html">Commercial Development</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -2114,10 +2119,10 @@ Blog Area
                                         <h3 class="widget_title">Quick Links</h3>
                                         <div class="menu-all-pages-container">
                                             <ul class="menu">
-                                                <li><a href="service.html">Strategy Services</a></li>
-                                                <li><a href="service.html">Management</a></li>
+                                                <li><a href="about.html">About Us</a></li>
+                                                <li><a href="service.html">Projects</a></li>
+                                                <li><a href="contact.html">Contact Us</a></li>
                                                 <li><a href="service.html">Privacy & Policy</a></li>
-                                                <li><a href="service.html">Sitemap</a></li>
                                                 <li><a href="service.html">Term & Conditions</a></li>
                                             </ul>
                                         </div>
@@ -2125,14 +2130,14 @@ Blog Area
                                 </div>
                                 <div class="footer-item">
                                     <div class="widget widget_nav_menu footer-widget">
-                                        <h3 class="widget_title">Support</h3>
+                                        <h3 class="widget_title">Services</h3>
                                         <div class="menu-all-pages-container">
                                             <ul class="menu">
-                                                <li><a href="contact.html">Help Center</a></li>
-                                                <li><a href="service.html">FAQs</a></li>
-                                                <li><a href="contact.html">Contact Us</a></li>
-                                                <li><a href="contact.html">Ticket Support</a></li>
-                                                <li><a href="contact.html">Live Chat</a></li>
+                                                <li><a href="contact.html">Custom Homes</a></li>
+                                                <li><a href="service.html">Knock Down Rebuild</a></li>
+                                                <li><a href="contact.html">Town Planning</a></li>
+                                                <li><a href="contact.html">Building Permit</a></li>
+                                                <li><a href="contact.html">Renovation</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -2141,48 +2146,68 @@ Blog Area
                                     <div class="widget widget_banner footer-widget">
                                         <h3 class="widget_title">Pillar Location</h3>
                                         <div class="widget-map">
-                                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3644.7310056272386!2d89.2286059153658!3d24.00527418490799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fe9b97badc6151%3A0x30b048c9fb2129bc!2sAngfuztheme!5e0!3m2!1sen!2sbd!4v1658812932163!5m2!1sen!2sbd"></iframe>
+                                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3139.365473876232!2d145.283661!3d-38.10843100000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad60fb86396ab27%3A0x46d9d4214fae1b12!2s142%20High%20St%2C%20Cranbourne%20VIC%203977%2C%20Australia!5e0!3m2!1sen!2sin!4v1757916283812!5m2!1sen!2sin" width="290" height="185" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="footer-right-bottom-wrap">
-                                <div class="footer-right-bottom-item">
-                                    <div class="footer-right-bottom-item__thumb help">
-                                        <img src="assets/img/icon/footer-default-icon-1-1.png" alt="img">
-                                    </div>
-                                    <div class="footer-right-bottom-item__content">
-                                        <h4 class="box-title"><a href="contact.html">Need to Home buy or sell?</a></h4>
-                                    </div>
+                            <div class="footer-bottom-community">
+                                <div class="content">
+                                    <p>@valeti on Instagram</p>
+                                    <h4 class="box-title">Nice Gallery</h4>
                                 </div>
-                                <div class="footer-right-bottom-item scan">
-                                    <div class="footer-right-bottom-item__thumb">
-                                        <img src="assets/img/icon/footer-default-icon-1-2.png" alt="img">
+                                <div class="footer-gallery-wrapper">
+                                    <div class="simple-gallery-card">
+                                        <div class="gallery-img">
+                                            <img src="assets/img/gallery/footer-gallery-1-1.jpg" alt="Gallery-Image">
+                                            <a href="assets/img/gallery/footer-gallery-1-1.jpg" class="icon-btn popup-image"> <i class="fa-brands fa-instagram"></i> </a>
+                                        </div>
                                     </div>
-                                    <div class="footer-right-bottom-item__content">
-                                        <p>Download on the</p>
-                                        <h4 class="box-title"><a href="https://www.apple.com/app-store/">App Store</a></h4>
+                                    <div class="simple-gallery-card">
+                                        <div class="gallery-img">
+                                            <img src="assets/img/gallery/footer-gallery-1-2.jpg" alt="Gallery-Image">
+                                            <a href="assets/img/gallery/footer-gallery-1-2.jpg" class="icon-btn popup-image"> <i class="fa-brands fa-instagram"></i> </a>
+                                        </div>
                                     </div>
-                                    <div class="footer-right-bottom-item__right">
-                                        <img src="assets/img/icon/footer-default-icon-1-2-scan.png" alt="img">
+                                    <div class="simple-gallery-card">
+                                        <div class="gallery-img">
+                                            <img src="assets/img/gallery/footer-gallery-1-3.jpg" alt="Gallery-Image">
+                                            <a href="assets/img/gallery/footer-gallery-1-3.jpg" class="icon-btn popup-image"> <i class="fa-brands fa-instagram"></i> </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="footer-right-bottom-item scan">
-                                    <div class="footer-right-bottom-item__thumb">
-                                        <img src="assets/img/icon/footer-default-icon-1-3.png" alt="img">
+                                    <div class="simple-gallery-card">
+                                        <div class="gallery-img">
+                                            <img src="assets/img/gallery/footer-gallery-1-5.jpg" alt="Gallery-Image">
+                                            <a href="assets/img/gallery/footer-gallery-1-5.jpg" class="icon-btn popup-image"> <i class="fa-brands fa-instagram"></i> </a>
+                                        </div>
                                     </div>
-                                    <div class="footer-right-bottom-item__content">
-                                        <p>GET IT ON</p>
-                                        <h4 class="box-title"><a href="https://play.google.com/store/apps">Google Play</a></h4>
+                                    <div class="simple-gallery-card">
+                                        <div class="gallery-img">
+                                            <img src="assets/img/gallery/footer-gallery-1-6.jpg" alt="Gallery-Image">
+                                            <a href="assets/img/gallery/footer-gallery-1-6.jpg" class="icon-btn popup-image"> <i class="fa-brands fa-instagram"></i> </a>
+                                        </div>
                                     </div>
-                                    <div class="footer-right-bottom-item__right">
-                                        <img src="assets/img/icon/footer-default-icon-1-2-scan.png" alt="img">
+                                    <div class="simple-gallery-card">
+                                        <div class="gallery-img">
+                                            <img src="assets/img/gallery/footer-gallery-1-7.jpg" alt="Gallery-Image">
+                                            <a href="assets/img/gallery/footer-gallery-1-7.jpg" class="icon-btn popup-image"> <i class="fa-brands fa-instagram"></i> </a>
+                                        </div>
+                                    </div>
+                                    <div class="simple-gallery-card">
+                                        <div class="gallery-img">
+                                            <img src="assets/img/gallery/footer-gallery-1-4.jpg" alt="Gallery-Image">
+                                            <a href="assets/img/gallery/footer-gallery-1-4.jpg" class="icon-btn popup-image"> <i class="fa-brands fa-instagram"></i> </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- <div class="row">
+				<div class="col-lg-3"></div>
+				<div class="col-lg-9"></div>
+			</div> -->
             </div>
         </div>
         <div class="copyright-wrap">
@@ -2190,7 +2215,7 @@ Blog Area
             <div class="container">
                 <div class="row gy-3 justify-content-lg-between justify-content-center align-items-center">
                     <div class="col-lg-7">
-                        <p class="copyright-text">Copyright <i class="fal fa-copyright"></i> 2025 <a href="index.html">Piller</a>. All Rights Reserved.</p>
+                        <p class="copyright-text">Copyright <i class="fal fa-copyright"></i> 2025 <a href="index.html">Valeti</a>. All Rights Reserved.</p>
                     </div>
                     <div class="col-auto">
                         <div class="footer-default-copy-right">
@@ -2253,6 +2278,9 @@ Blog Area
 
     <!-- Main Js File -->
     <script src="assets/js/main.js"></script>
+    <!-- Dynamic Property Scripts -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/frontend.js"></script>
 </body>
 
 </html>
