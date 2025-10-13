@@ -9,6 +9,10 @@ class PropertyDisplay {
         this.currentProperties = [];
         this.currentFilters = {};
         this.isLoading = false;
+        this.currentPage = 1;
+        this.itemsPerPage = 12; // Number of properties per page on search page
+        this.isSearchPage = window.location.pathname.includes('search.html');
+        this.homePageLimit = 8; // Number of properties to show on home page
     }
 
     /**
@@ -16,7 +20,11 @@ class PropertyDisplay {
      */
     async init() {
         try {
-            await this.loadInitialProperties();
+            if (this.isSearchPage) {
+                await this.loadAllPropertiesForSearch();
+            } else {
+                await this.loadInitialProperties();
+            }
             await this.loadFeaturedProperties();
             this.setupEventListeners();
             this.setupSearchForm();
@@ -37,8 +45,10 @@ class PropertyDisplay {
             const response = await this.api.getAllProperties({ limit: 50 });
             
             if (response.success) {
-                // Get 8 random properties from the response
-                this.currentProperties = this.getRandomProperties(response.data, 8);
+                // Sort by latest first to ensure we get recent properties in our pool
+                const sortedProperties = this.api.sortProperties(response.data, 'createdAt', 'desc');
+                // Get random properties from the response (configurable via homePageLimit)
+                this.currentProperties = this.getRandomProperties(sortedProperties, this.homePageLimit);
                 this.displayProperties(this.currentProperties);
                 this.updatePropertyStats();
             } else {
@@ -49,6 +59,81 @@ class PropertyDisplay {
             this.showError('Failed to load properties. Please refresh the page.');
         } finally {
             this.hideLoading();
+        }
+    }
+
+    /**
+     * Load all properties for search page with pagination
+     */
+    async loadAllPropertiesForSearch() {
+        this.showLoading();
+        
+        try {
+            // Fetch all properties using multiple API calls if needed (API limit is 100 per request)
+            const allProperties = await this.fetchAllPropertiesFromAPI();
+            
+            if (allProperties.length > 0) {
+                // Sort by latest first (createdAt descending)
+                this.currentProperties = this.api.sortProperties(allProperties, 'createdAt', 'desc');
+                this.displayPropertiesWithPagination();
+                this.updatePropertyStats();
+                this.updateSearchResultsCount(this.currentProperties.length);
+            } else {
+                this.currentProperties = [];
+                this.displayPropertiesWithPagination();
+            }
+        } catch (error) {
+            console.error('Error loading properties:', error);
+            this.showError('Failed to load properties. Please refresh the page.');
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    /**
+     * Fetch all properties from API (handles multiple pages if needed)
+     * API has a limit of 100 properties per request
+     * @returns {Promise<Array>} - All properties from all pages
+     */
+    async fetchAllPropertiesFromAPI() {
+        let allProperties = [];
+        let currentPage = 1;
+        let hasMorePages = true;
+        const limitPerPage = 100; // API maximum limit
+
+        try {
+            while (hasMorePages) {
+                const response = await this.api.getAllProperties({ 
+                    limit: limitPerPage, 
+                    page: currentPage 
+                });
+
+                if (response.success && response.data.length > 0) {
+                    allProperties = allProperties.concat(response.data);
+                    
+                    // Check if there are more pages
+                    // If we got less than the limit, we've reached the last page
+                    if (response.data.length < limitPerPage) {
+                        hasMorePages = false;
+                    } else {
+                        currentPage++;
+                    }
+                    
+                    // Safety limit: max 5 pages (500 properties)
+                    if (currentPage > 5) {
+                        console.warn('Reached maximum page limit (5 pages). Stopping fetch.');
+                        hasMorePages = false;
+                    }
+                } else {
+                    hasMorePages = false;
+                }
+            }
+
+            console.log(`Fetched ${allProperties.length} properties from ${currentPage} page(s)`);
+            return allProperties;
+        } catch (error) {
+            console.error('Error fetching all properties:', error);
+            return allProperties; // Return what we have so far
         }
     }
 
@@ -136,6 +221,197 @@ class PropertyDisplay {
     }
 
     /**
+     * Display properties with pagination
+     */
+    displayPropertiesWithPagination() {
+        const container = document.getElementById('properties-container');
+        if (!container) {
+            console.warn('Properties container not found');
+            return;
+        }
+
+        if (this.currentProperties.length === 0) {
+            container.innerHTML = this.getNoPropertiesHTML();
+            return;
+        }
+
+        // Calculate pagination
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        const paginatedProperties = this.currentProperties.slice(startIndex, endIndex);
+
+        // Display properties
+        const propertiesHTML = paginatedProperties.map(property => this.createPropertyCard(property)).join('');
+        container.innerHTML = propertiesHTML;
+
+        // Add click event listeners to property cards
+        this.addPropertyCardListeners();
+
+        // Render pagination controls
+        this.renderPaginationControls();
+    }
+
+    /**
+     * Render pagination controls
+     */
+    renderPaginationControls() {
+        const totalPages = Math.ceil(this.currentProperties.length / this.itemsPerPage);
+        
+        // Calculate current range
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage + 1;
+        const endIndex = Math.min(this.currentPage * this.itemsPerPage, this.currentProperties.length);
+        
+        // Find or create pagination container
+        let paginationContainer = document.getElementById('pagination-container');
+        if (!paginationContainer) {
+            paginationContainer = this.createPaginationContainer();
+        }
+        
+        // Only show pagination if there's more than one page
+        if (totalPages <= 1) {
+            // Show results info even for single page
+            paginationContainer.innerHTML = `
+                <div class="text-center mt-4">
+                    <p class="text-muted">Showing ${startIndex} to ${endIndex} of ${this.currentProperties.length} properties</p>
+                </div>
+            `;
+            return;
+        }
+
+        const paginationHTML = `
+            <div class="text-center">
+                <p class="text-muted mb-3">Showing ${startIndex} to ${endIndex} of ${this.currentProperties.length} properties</p>
+                ${this.createPaginationHTML(totalPages)}
+            </div>
+        `;
+        
+        paginationContainer.innerHTML = paginationHTML;
+        
+        // Add pagination event listeners
+        this.addPaginationListeners();
+    }
+
+    /**
+     * Create pagination HTML
+     * @param {number} totalPages - Total number of pages
+     * @returns {string} - Pagination HTML
+     */
+    createPaginationHTML(totalPages) {
+        let paginationHTML = '<ul class="th-pagination">';
+        
+        // Previous button
+        if (this.currentPage > 1) {
+            paginationHTML += `
+                <li>
+                    <a href="#" data-page="${this.currentPage - 1}">
+                        <i class="fa-regular fa-arrow-left"></i>
+                    </a>
+                </li>
+            `;
+        }
+
+        // Page numbers
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        // Adjust start page if we're near the end
+        if (endPage - startPage < maxVisiblePages - 1) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+
+        // First page
+        if (startPage > 1) {
+            paginationHTML += `<li><a href="#" data-page="1">1</a></li>`;
+            if (startPage > 2) {
+                paginationHTML += `<li><span>...</span></li>`;
+            }
+        }
+
+        // Page numbers
+        for (let i = startPage; i <= endPage; i++) {
+            if (i === this.currentPage) {
+                paginationHTML += `<li><a href="#" class="active" data-page="${i}">${i}</a></li>`;
+            } else {
+                paginationHTML += `<li><a href="#" data-page="${i}">${i}</a></li>`;
+            }
+        }
+
+        // Last page
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                paginationHTML += `<li><span>...</span></li>`;
+            }
+            paginationHTML += `<li><a href="#" data-page="${totalPages}">${totalPages}</a></li>`;
+        }
+
+        // Next button
+        if (this.currentPage < totalPages) {
+            paginationHTML += `
+                <li>
+                    <a href="#" data-page="${this.currentPage + 1}">
+                        <i class="fa-regular fa-arrow-right"></i>
+                    </a>
+                </li>
+            `;
+        }
+
+        paginationHTML += '</ul>';
+        return paginationHTML;
+    }
+
+    /**
+     * Create pagination container if it doesn't exist
+     * @returns {HTMLElement} - Pagination container element
+     */
+    createPaginationContainer() {
+        const container = document.createElement('div');
+        container.id = 'pagination-container';
+        container.className = 'col-12 mt-40';
+        
+        const propertiesContainer = document.getElementById('properties-container');
+        if (propertiesContainer && propertiesContainer.parentNode) {
+            propertiesContainer.parentNode.appendChild(container);
+        }
+        
+        return container;
+    }
+
+    /**
+     * Add pagination event listeners
+     */
+    addPaginationListeners() {
+        const paginationLinks = document.querySelectorAll('#pagination-container a[data-page]');
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = parseInt(link.getAttribute('data-page'));
+                this.goToPage(page);
+            });
+        });
+    }
+
+    /**
+     * Go to specific page
+     * @param {number} page - Page number
+     */
+    goToPage(page) {
+        this.currentPage = page;
+        
+        if (this.isSearchPage) {
+            this.displayPropertiesWithPagination();
+        } else {
+            this.displayProperties(this.currentProperties);
+        }
+        
+        // Scroll to top of properties section
+        const propertiesSection = document.getElementById('properties-container');
+        if (propertiesSection) {
+            propertiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    /**
      * Create HTML for a single property card
      * @param {object} property - Property data
      * @returns {string} - HTML string
@@ -210,7 +486,7 @@ class PropertyDisplay {
                             </li>
                             <li>
                                 <div class="icon"><img src="assets/img/icon/sqft.svg" alt="icon"></div>
-                                ${property.features.area || 0} ${property.features.areaUnit || 'sqft'}
+                                ${property.features.area || 0} ${property.features.areaUnit || 'sqm'}
                             </li>
                         </ul>
                         <div class="property-bottom">
@@ -346,7 +622,7 @@ class PropertyDisplay {
                             </li>
                             <li>
                                 <div class="icon"><img src="assets/img/icon/sqft.svg" alt="icon"></div>
-                                ${property.features.area || 0} ${property.features.areaUnit || 'sqft'}
+                                ${property.features.area || 0} ${property.features.areaUnit || 'sqm'}
                             </li>
                         </ul>
                         <div class="property-bottom">
@@ -476,7 +752,14 @@ class PropertyDisplay {
             
             if (response.success) {
                 this.currentProperties = response.data;
-                this.displayProperties(this.currentProperties);
+                this.currentPage = 1; // Reset to first page
+                
+                if (this.isSearchPage) {
+                    this.displayPropertiesWithPagination();
+                } else {
+                    this.displayProperties(this.currentProperties);
+                }
+                
                 this.updateSearchResultsCount(this.currentProperties.length);
             } else {
                 throw new Error(response.error || 'Search failed');
@@ -494,6 +777,7 @@ class PropertyDisplay {
      */
     async clearFilters() {
         this.currentFilters = {};
+        this.currentPage = 1; // Reset to first page
         
         // Reset form inputs
         const forms = document.querySelectorAll('form[data-search-form]');
@@ -509,7 +793,11 @@ class PropertyDisplay {
             viewAllButton.classList.add('active');
         }
 
-        await this.loadInitialProperties();
+        if (this.isSearchPage) {
+            await this.loadAllPropertiesForSearch();
+        } else {
+            await this.loadInitialProperties();
+        }
     }
 
     /**
@@ -720,8 +1008,14 @@ class PropertyDisplay {
      * @param {string} filterValue - Filter value
      */
     applyFilter(filterValue) {
+        this.currentPage = 1; // Reset to first page when filtering
+        
         if (filterValue === '*') {
-            this.displayProperties(this.currentProperties);
+            if (this.isSearchPage) {
+                this.displayPropertiesWithPagination();
+            } else {
+                this.displayProperties(this.currentProperties);
+            }
         } else {
             // Remove the dot from filterValue if it exists (e.g., ".single-story" -> "single-story")
             const cleanFilterValue = filterValue.startsWith('.') ? filterValue.substring(1) : filterValue;
@@ -735,7 +1029,20 @@ class PropertyDisplay {
             if (filteredProperties.length === 0) {
                 this.showNoDataMessage(cleanFilterValue);
             } else {
-                this.displayProperties(filteredProperties);
+                // Temporarily store current properties and replace with filtered
+                const allProperties = this.currentProperties;
+                this.currentProperties = filteredProperties;
+                
+                if (this.isSearchPage) {
+                    this.displayPropertiesWithPagination();
+                } else {
+                    this.displayProperties(filteredProperties);
+                }
+                
+                // Restore all properties after display
+                if (!this.isSearchPage) {
+                    this.currentProperties = allProperties;
+                }
             }
         }
     }
