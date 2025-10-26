@@ -25609,7 +25609,7 @@ input {
 
 .property-grid-list {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   background: var(--smoke-color);
   border-radius: 8px;
   padding: 40px 45px;

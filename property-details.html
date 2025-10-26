@@ -614,8 +614,8 @@
                                 <p class="mb-40 fadeinup wow"> Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</p>
 
                                 <div class="hightlighes-title-wrap mb-25 fadeinup wow">
-                                    <h2 class="page-title mb-2">Property Hightlights</h2>
-                                    <h5 class="house-sell"> House for sale </h5>
+                                    <h2 class="page-title mb-2">Plan Hightlights</h2>
+                                    <h5 class="house-sell"> Plan Details </h5>
                                 </div>
 
                                 <ul class="property-grid-list fadeinup wow">
@@ -902,7 +902,7 @@
                                     </div>
                                 </div>
 
-                                <h3 class="page-title mt-50 mb-30 fadeinup wow">Location</h3>
+                                <!-- <h3 class="page-title mt-50 mb-30 fadeinup wow">Location</h3>
                                 <div class="location-map fadeinup wow">
                                     <div class="contact-map">
                                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3644.7310056272386!2d89.2286059153658!3d24.00527418490799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fe9b97badc6151%3A0x30b048c9fb2129bc!2sAngfuztheme!5e0!3m2!1sen!2sbd!4v1651028958211!5m2!1sen!2sbd" allowfullscreen="" loading="lazy"></iframe>
@@ -918,7 +918,7 @@
                                             <p class="text">12345</p>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -1090,12 +1090,6 @@
                                         <button type="submit" class="th-btn radius">Send Us</button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                        <div class="widget widget_banner  " data-bg-src="assets/img/bg/widget_banner.jpg">
-                            <div class="widget-banner">
-                                <h2 class="title">We can help you to find real estate agency</h2>
-                                <a href="contact.html" class="th-btn radius">Contact with Agent</a>
                             </div>
                         </div>
                     </aside>
@@ -1321,8 +1315,423 @@
     <!-- nice select -->
     <script src="assets/js/nice-select.min.js"></script>
 
+    <!-- API Js File -->
+    <script src="assets/js/api.js"></script>
+    
     <!-- Main Js File -->
     <script src="assets/js/main.js"></script>
+    
+    <!-- Property Details API Integration -->
+    <script>
+        // Property Details Page Integration
+        class PropertyDetailsPage {
+            constructor() {
+                this.propertyAPI = window.propertyAPI;
+                this.propertyId = null;
+                this.propertyData = null;
+            }
+
+            /**
+             * Initialize the property details page
+             */
+            async init() {
+                try {
+                    console.log('PropertyDetailsPage.init() called');
+                    console.log('this.propertyAPI:', this.propertyAPI);
+                    
+                    // Get property ID from URL
+                    this.propertyId = this.propertyAPI.getPropertyIdFromURL();
+                    console.log('Extracted property ID:', this.propertyId);
+                    
+                    if (!this.propertyId) {
+                        console.error('No property ID found in URL');
+                        this.showError('Property ID not found in URL');
+                        return;
+                    }
+
+                    console.log('Loading property details for ID:', this.propertyId);
+                    
+                    // Show loading state
+                    this.showLoading();
+                    
+                    // Fetch property data
+                    console.log('About to call getPropertyDetails with ID:', this.propertyId);
+                    const result = await this.propertyAPI.getPropertyDetails(this.propertyId);
+                    console.log('API call result:', result);
+                    
+                    if (result.success && result.data) {
+                        this.propertyData = result.data;
+                        console.log('Property data loaded successfully:', this.propertyData);
+                        this.renderPropertyDetails();
+                    } else {
+                        console.error('Failed to fetch property details:', result.error);
+                        this.showError(result.error || 'Failed to load property details');
+                    }
+                } catch (error) {
+                    console.error('Error initializing property details page:', error);
+                    console.error('Error stack:', error.stack);
+                    this.showError('An error occurred while loading property details');
+                }
+            }
+
+            /**
+             * Show loading state
+             */
+            showLoading() {
+                const breadcrumbTitle = document.querySelector('.breadcumb-title');
+                if (breadcrumbTitle) {
+                    breadcrumbTitle.textContent = 'Loading Property Details...';
+                }
+            }
+
+            /**
+             * Show error message
+             */
+            showError(message) {
+                const breadcrumbTitle = document.querySelector('.breadcumb-title');
+                if (breadcrumbTitle) {
+                    breadcrumbTitle.textContent = 'Property Not Found';
+                }
+                
+                // You can add more error handling UI here
+                console.error('Property Details Error:', message);
+            }
+
+            /**
+             * Render property details on the page
+             */
+            renderPropertyDetails() {
+                if (!this.propertyData) return;
+
+                console.log('Rendering property details:', this.propertyData);
+
+                // Update page title
+                this.updatePageTitle();
+                
+                // Update breadcrumb
+                this.updateBreadcrumb();
+                
+                // Update property images
+                this.updatePropertyImages();
+                
+                // Update property information
+                this.updatePropertyInfo();
+                
+                // Update property highlights
+                this.updatePropertyHighlights();
+                
+                // Update property features
+                this.updatePropertyFeatures();
+                
+                // Update location
+                this.updateLocation();
+            }
+
+            /**
+             * Update page title
+             */
+            updatePageTitle() {
+                // Update the "About This Property" title with actual property title
+                const aboutTitle = document.querySelector('.page-title-wrap .page-title');
+                if (aboutTitle && this.propertyData.title) {
+                    aboutTitle.textContent = this.propertyData.title;
+                }
+            }
+
+            /**
+             * Update breadcrumb
+             */
+            updateBreadcrumb() {
+                const breadcrumbTitle = document.querySelector('.breadcumb-title');
+                if (breadcrumbTitle && this.propertyData.title) {
+                    breadcrumbTitle.textContent = this.propertyData.title;
+                }
+            }
+
+            /**
+             * Update property images
+             */
+            updatePropertyImages() {
+                if (!this.propertyData.images || this.propertyData.images.length === 0) return;
+
+                // Update main slider images
+                const sliderWrapper = document.querySelector('.swiper-wrapper');
+                if (sliderWrapper) {
+                    sliderWrapper.innerHTML = '';
+                    
+                    this.propertyData.images.forEach((image, index) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'swiper-slide';
+                        slide.innerHTML = `
+                            <div class="property-slider-img propery-single-slide" id="panorama${index + 1}">
+                                <img src="${image.url}" alt="${image.caption || this.propertyData.title}">
+                            </div>
+                        `;
+                        sliderWrapper.appendChild(slide);
+                    });
+                }
+
+                // Update thumbnail slider
+                const thumbWrapper = document.querySelector('.property-thumb-slider .swiper-wrapper');
+                if (thumbWrapper) {
+                    thumbWrapper.innerHTML = '';
+                    
+                    this.propertyData.images.forEach((image, index) => {
+                        const thumbSlide = document.createElement('div');
+                        thumbSlide.className = 'swiper-slide';
+                        thumbSlide.innerHTML = `
+                            <div class="tab-btn property-slider-img">
+                                <img src="${image.url}" alt="${image.caption || this.propertyData.title}">
+                            </div>
+                        `;
+                        thumbWrapper.appendChild(thumbSlide);
+                    });
+                }
+            }
+
+            /**
+             * Update property information
+             */
+            updatePropertyInfo() {
+                // Update price (the h4 element after the title)
+                const priceElement = document.querySelector('.page-title-wrap .page-title + h4');
+                if (priceElement) {
+                    if (this.propertyData.formattedPrice && 
+                        this.propertyData.formattedPrice !== '$NaN' && 
+                        this.propertyData.formattedPrice !== 'NaN' &&
+                        this.propertyData.formattedPrice.trim() !== '') {
+                        priceElement.textContent = this.propertyData.formattedPrice;
+                    } else {
+                        priceElement.textContent = 'Price on Call';
+                    }
+                }
+
+                // Update location
+                const locationElement = document.querySelector('.box-text');
+                if (locationElement && this.propertyData.fullAddress) {
+                    locationElement.innerHTML = `
+                        <div class="icon"><img src="assets/img/icon/popular-location.svg" alt="icon"></div> 
+                        ${this.propertyData.fullAddress}
+                    `;
+                }
+
+                // Update property features (bed, bath, area)
+                const featuresList = document.querySelector('.property-featured');
+                if (featuresList) {
+                    featuresList.innerHTML = '';
+                    
+                    if (this.propertyData.features.bedrooms) {
+                        const bedItem = document.createElement('li');
+                        bedItem.innerHTML = `
+                            <div class="icon"><img src="assets/img/icon/bed.svg" alt="icon"></div>
+                            Bed ${this.propertyData.features.bedrooms}
+                        `;
+                        featuresList.appendChild(bedItem);
+                    }
+                    
+                    if (this.propertyData.features.bathrooms) {
+                        const bathItem = document.createElement('li');
+                        bathItem.innerHTML = `
+                            <div class="icon"><img src="assets/img/icon/bath.svg" alt="icon"></div>
+                            Bath ${this.propertyData.features.bathrooms}
+                        `;
+                        featuresList.appendChild(bathItem);
+                    }
+                    
+                    if (this.propertyData.features.area) {
+                        const areaItem = document.createElement('li');
+                        areaItem.innerHTML = `
+                            <div class="icon"><img src="assets/img/icon/sqft.svg" alt="icon"></div>
+                            ${this.propertyData.features.area} ${this.propertyData.features.areaUnit || 'sqft'}
+                        `;
+                        featuresList.appendChild(areaItem);
+                    }
+                }
+
+                // Update featured tag and creation date
+                this.updatePropertyMeta();
+
+                // Update description paragraphs
+                this.updateDescription();
+            }
+
+            /**
+             * Update property meta information (featured tag and creation date)
+             */
+            updatePropertyMeta() {
+                // Update featured tag
+                const featuredTag = document.querySelector('.property-tag');
+                if (featuredTag) {
+                    if (this.propertyData.isFeatured) {
+                        featuredTag.textContent = 'Featured';
+                        featuredTag.style.display = 'inline-block';
+                    } else {
+                        featuredTag.textContent = 'Not Featured';
+                        featuredTag.style.display = 'inline-block';
+                    }
+                }
+
+                // Update creation date - target the second <a> element with calendar icon
+                if (this.propertyData.createdAt) {
+                    const dateElements = document.querySelectorAll('.property-meta a[href="blog.html"]');
+                    if (dateElements.length >= 2) {
+                        // The second <a> element is the date element
+                        const dateElement = dateElements[1];
+                        const formattedDate = this.formatDate(this.propertyData.createdAt);
+                        dateElement.innerHTML = `<i class="fa-solid fa-calendar-days"></i> ${formattedDate}`;
+                    }
+                }
+            }
+
+            /**
+             * Format date from ISO string to readable format
+             * @param {string} dateString - ISO date string
+             * @returns {string} - Formatted date (e.g., "13 Oct, 2025")
+             */
+            formatDate(dateString) {
+                try {
+                    const date = new Date(dateString);
+                    const options = { 
+                        day: '2-digit', 
+                        month: 'short', 
+                        year: 'numeric' 
+                    };
+                    return date.toLocaleDateString('en-GB', options);
+                } catch (error) {
+                    console.error('Error formatting date:', error);
+                    return 'Date not available';
+                }
+            }
+
+            /**
+             * Update property description
+             */
+            updateDescription() {
+                if (!this.propertyData.description) return;
+
+                // Update the first description paragraph
+                const firstDescElement = document.querySelector('.mb-30.fadeinup.wow');
+                if (firstDescElement) {
+                    firstDescElement.textContent = this.propertyData.description;
+                }
+
+                // Remove or hide the second description paragraph since we're using real data
+                const secondDescElement = document.querySelector('.mb-40.fadeinup.wow');
+                if (secondDescElement) {
+                    secondDescElement.style.display = 'none';
+                }
+            }
+
+            /**
+             * Update property highlights
+             */
+            updatePropertyHighlights() {
+                const highlightsList = document.querySelector('.property-grid-list');
+                if (!highlightsList) return;
+
+                // Clear existing highlights
+                highlightsList.innerHTML = '';
+
+                // Add property highlights based on available data
+                const highlights = [
+                    { icon: 'property-single-icon1-2.svg', title: 'Type', value: this.propertyData.type },
+                    { icon: 'property-single-icon1-3.svg', title: 'Category', value: this.propertyData.category },
+                    { icon: 'property-single-icon1-4.svg', title: 'Bedroom', value: this.propertyData.features.bedrooms },
+                    { icon: 'property-single-icon1-5.svg', title: 'Bath', value: this.propertyData.features.bathrooms },
+                    { icon: 'property-single-icon1-8.svg', title: 'Area', value: `${this.propertyData.features.area} ${this.propertyData.features.areaUnit}` },
+                    { icon: 'property-single-icon1-9.svg', title: 'Garage', value: this.propertyData.features.garages ? 'Yes' : 'No' },
+                    { icon: 'property-single-icon1-10.svg', title: 'Floors', value: this.propertyData.features.floors },
+                    { icon: 'property-single-icon1-11.svg', title: 'Status', value: this.propertyData.status },
+                    { icon: 'property-single-icon1-12.svg', title: 'Featured', value: this.propertyData.isFeatured ? 'Yes' : 'No' }
+                ];
+
+                highlights.forEach(highlight => {
+                    if (highlight.value !== undefined && highlight.value !== null) {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <div class="property-grid-list-icon">
+                                <img src="assets/img/icon/${highlight.icon}" alt="img">
+                            </div>
+                            <div class="property-grid-list-details">
+                                <h4 class="property-grid-list-title">${highlight.title}</h4>
+                                <p class="property-grid-list-text">${highlight.value}</p>
+                            </div>
+                        `;
+                        highlightsList.appendChild(listItem);
+                    }
+                });
+            }
+
+            /**
+             * Update property features/amenities
+             */
+            updatePropertyFeatures() {
+                const featuresList = document.querySelector('.fea-anim-checklist ul');
+                if (!featuresList) return;
+
+                // Clear existing features
+                featuresList.innerHTML = '';
+
+                // Add amenities if available from API
+                if (this.propertyData.amenities && this.propertyData.amenities.length > 0) {
+                    this.propertyData.amenities.forEach(amenity => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = amenity;
+                        featuresList.appendChild(listItem);
+                    });
+                } else {
+                    // Only show features that are actually available in the API response
+                    const features = [];
+                    
+                    // Add features based on actual property data from API
+                    if (this.propertyData.features && this.propertyData.features.garages > 0) {
+                        features.push('Garage');
+                    }
+                    
+                    // If no amenities and no specific features, show a message
+                    if (features.length === 0) {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = 'Features information not available';
+                        featuresList.appendChild(listItem);
+                    } else {
+                        features.forEach(feature => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = feature;
+                            featuresList.appendChild(listItem);
+                        });
+                    }
+                }
+            }
+
+            /**
+             * Update location information
+             */
+            updateLocation() {
+                const addressElement = document.querySelector('.location-map-address .text');
+                if (addressElement && this.propertyData.fullAddress) {
+                    addressElement.textContent = this.propertyData.fullAddress;
+                }
+            }
+        }
+
+        // Initialize the property details page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded - Starting Property Details Page');
+            console.log('Current URL:', window.location.href);
+            console.log('URL Search Params:', window.location.search);
+            
+            // Check if propertyAPI is available
+            if (typeof window.propertyAPI === 'undefined') {
+                console.error('propertyAPI is not available. Make sure api.js is loaded.');
+                return;
+            }
+            
+            console.log('propertyAPI is available:', window.propertyAPI);
+            
+            const propertyDetailsPage = new PropertyDetailsPage();
+            propertyDetailsPage.init();
+        });
+    </script>
 </body>
 
 </html>

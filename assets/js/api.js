@@ -24,6 +24,7 @@ class PropertyAPI {
     async makeAPICall(endpoint, params = {}) {
         try {
             const url = new URL(`${this.baseURL}${endpoint}`);
+            console.log('makeAPICall - Full URL:', url.toString());
             
             // Add query parameters
             Object.keys(params).forEach(key => {
@@ -32,6 +33,7 @@ class PropertyAPI {
                 }
             });
 
+            console.log('Making fetch request to:', url.toString());
             const response = await fetch(url.toString(), {
                 method: 'GET',
                 headers: {
@@ -39,11 +41,15 @@ class PropertyAPI {
                 }
             });
 
+            console.log('Fetch response status:', response.status);
+            console.log('Fetch response ok:', response.ok);
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('Fetch response data:', data);
             return data;
         } catch (error) {
             console.error('API call failed:', error);
@@ -115,12 +121,31 @@ class PropertyAPI {
      */
     async getPropertyDetails(propertyId) {
         try {
-            const response = await this.makeAPICall(`${this.endpoints.propertyDetails}/${propertyId}`);
-            return this.processPropertyDetailData(response);
+            console.log('getPropertyDetails called with ID:', propertyId);
+            const endpoint = `${this.endpoints.propertyDetails}/${propertyId}`;
+            console.log('API endpoint:', endpoint);
+            console.log('Full URL will be:', `${this.baseURL}${endpoint}`);
+            
+            const response = await this.makeAPICall(endpoint);
+            console.log('Raw API response:', response);
+            
+            const processedResponse = this.processPropertyDetailData(response);
+            console.log('Processed response:', processedResponse);
+            
+            return processedResponse;
         } catch (error) {
             console.error('Failed to fetch property details:', error);
             return { success: false, data: null, error: error.message };
         }
+    }
+
+    /**
+     * Get property ID from URL parameters
+     * @returns {string|null} - Property ID from URL
+     */
+    getPropertyIdFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
     }
 
     /**
@@ -179,15 +204,15 @@ class PropertyAPI {
      * @returns {object} - Processed property detail
      */
     processPropertyDetailData(response) {
-        if (!response.success || !response.data) {
+        if (!response.success || !response.data || !response.data.property) {
             return { success: false, data: null, error: 'Invalid API response' };
         }
 
-        const property = response.data;
+        const property = response.data.property;
         return {
             success: true,
             data: {
-                id: property._id,
+                id: property._id || property.id,
                 title: property.title,
                 description: property.description,
                 type: property.type,
@@ -198,6 +223,9 @@ class PropertyAPI {
                 features: property.features,
                 amenities: property.amenities,
                 images: property.images,
+                primaryImage: property.primaryImage,
+                fullAddress: property.fullAddress,
+                formattedPrice: property.formattedPrice,
                 status: property.status,
                 agent: property.agent,
                 owner: property.owner,
