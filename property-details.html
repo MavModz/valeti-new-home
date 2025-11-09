@@ -1073,22 +1073,28 @@
                         <div class="widget sidebar-contact-form">
                             <h3 class="widget_title">Contact Us</h3>
                             <div class="contact-form-widget">
-                                <form action="#" class="newsletter-form">
+                                <form action="send-property-email.php" method="post" class="newsletter-form" novalidate>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Your Name" required="">
+                                        <input class="form-control" type="text" name="name" id="contact-name" placeholder="Your Name" required="">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="email" placeholder="Your Email" required="">
+                                        <input class="form-control" type="email" name="email" id="contact-email" placeholder="Your Email" required="">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Your Phone" required="">
+                                        <input class="form-control" type="text" name="phone" id="contact-phone" placeholder="Your Phone" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" id="contact-property-id" name="property_id_display" placeholder="Property ID" disabled>
+                                        <input type="hidden" name="property_id" id="contact-property-id-hidden">
+                                        <input type="hidden" name="property_url" id="contact-property-url">
                                     </div>
                                     <div class="form-group mb-4">
-                                        <textarea name="Your message" id="message" cols="30" rows="3" class="form-control" placeholder="Your Message"></textarea>
+                                        <textarea name="message" id="contact-message" cols="30" rows="3" class="form-control" placeholder="Your Message" required=""></textarea>
                                     </div>
                                     <div class="form-btn pt-2">
                                         <button type="submit" class="th-btn radius">Send Us</button>
                                     </div>
+                                    <div class="form-message pt-2" aria-live="polite"></div>
                                 </form>
                             </div>
                         </div>
@@ -1329,6 +1335,8 @@
                 this.propertyAPI = window.propertyAPI;
                 this.propertyId = null;
                 this.propertyData = null;
+                this.contactForm = null;
+                this.formMessageElement = null;
             }
 
             /**
@@ -1348,6 +1356,8 @@
                         this.showError('Property ID not found in URL');
                         return;
                     }
+
+                    this.setupContactForm();
 
                     console.log('Loading property details for ID:', this.propertyId);
                     
@@ -1425,6 +1435,9 @@
                 
                 // Update location
                 this.updateLocation();
+
+                // Update contact form hidden fields with latest property data
+                this.updateContactFormFields();
             }
 
             /**
@@ -1701,6 +1714,133 @@
                         });
                     }
                 }
+            }
+
+            /**
+             * Setup the contact form to inject property data and handle submissions
+             */
+            setupContactForm() {
+                const form = document.querySelector('.sidebar-contact-form form');
+                if (!form) {
+                    console.warn('Contact form not found on the page.');
+                    return;
+                }
+
+                if (form.dataset.initialized === 'true') {
+                    this.updateContactFormFields();
+                    return;
+                }
+
+                this.contactForm = form;
+                this.formMessageElement = form.querySelector('.form-message');
+                this.updateContactFormFields();
+
+                form.addEventListener('submit', (event) => this.handleContactFormSubmit(event));
+                form.dataset.initialized = 'true';
+            }
+
+            /**
+             * Update contact form fields with current property context
+             */
+            updateContactFormFields() {
+                if (!this.contactForm) return;
+
+                const propertyIdValue = this.propertyId ? String(this.propertyId) : '';
+                const propertyUrlValue = window.location.href;
+
+                const propertyIdDisplayField = this.contactForm.querySelector('#contact-property-id');
+                const propertyIdHiddenField = this.contactForm.querySelector('#contact-property-id-hidden');
+                const propertyUrlHiddenField = this.contactForm.querySelector('#contact-property-url');
+
+                if (propertyIdDisplayField) {
+                    propertyIdDisplayField.value = propertyIdValue;
+                }
+
+                if (propertyIdHiddenField) {
+                    propertyIdHiddenField.value = propertyIdValue;
+                }
+
+                if (propertyUrlHiddenField) {
+                    propertyUrlHiddenField.value = propertyUrlValue;
+                }
+            }
+
+            /**
+             * Handle contact form submission and send data to server
+             * @param {SubmitEvent} event 
+             */
+            async handleContactFormSubmit(event) {
+                event.preventDefault();
+
+                const form = event.currentTarget;
+                if (!(form instanceof HTMLFormElement)) {
+                    console.error('Contact form submit event target is not a form element.');
+                    return;
+                }
+
+                this.clearFormMessage();
+
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton ? submitButton.textContent : null;
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Sending...';
+                }
+
+                try {
+                    const formData = new FormData(form);
+                    formData.set('property_id', this.propertyId ? String(this.propertyId) : '');
+                    formData.set('property_url', window.location.href);
+
+                    const response = await fetch(form.action || 'send-property-email.php', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+                    }
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        this.setFormMessage(data.message || 'Your message has been sent successfully.', 'success');
+                        form.reset();
+                        this.updateContactFormFields();
+                    } else {
+                        this.setFormMessage(data.message || 'Failed to send your message. Please try again later.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error submitting contact form:', error);
+                    this.setFormMessage('An unexpected error occurred. Please try again later.', 'error');
+                } finally {
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = originalButtonText || 'Send Us';
+                    }
+                }
+            }
+
+            /**
+             * Display a feedback message under the contact form
+             * @param {string} message
+             * @param {'success' | 'error'} status
+             */
+            setFormMessage(message, status = 'success') {
+                if (!this.formMessageElement) return;
+                this.formMessageElement.textContent = message;
+                this.formMessageElement.classList.remove('success', 'error');
+                this.formMessageElement.classList.add(status);
+            }
+
+            /**
+             * Clear any feedback message below the contact form
+             */
+            clearFormMessage() {
+                if (!this.formMessageElement) return;
+                this.formMessageElement.textContent = '';
+                this.formMessageElement.classList.remove('success', 'error');
             }
 
             /**
