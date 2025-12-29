@@ -170,7 +170,7 @@
     <div class="popup-search-box d-none d-lg-block">
         <button class="searchClose"><i class="fal fa-times"></i></button>
         <form action="#">
-            <input type="text" placeholder="What are you looking for?">
+            <input type="text" name="q" placeholder="What are you looking for?">
             <button type="submit"><i class="fal fa-search"></i></button>
         </form>
     </div><!--==============================
@@ -1904,8 +1904,8 @@ Blog Area
                             <aside class="sidebar-area">
                                 <div class="widget widget_search  ">
                                     <h3 class="widget_title">search</h3>
-                                    <form class="search-form">
-                                        <input type="text" placeholder="Enter Keyword">
+                                    <form class="search-form" id="sidebar-search-form">
+                                        <input type="text" name="q" placeholder="Enter Keyword" value="">
                                         <button type="submit"><i class="far fa-search"></i></button>
                                     </form>
                                 </div>
@@ -2307,6 +2307,37 @@ Blog Area
     <!-- Dynamic Property Scripts -->
     <script src="assets/js/api.js"></script>
     <script src="assets/js/frontend.js"></script>
+    
+    <!-- Sidebar Search Form Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarSearchForm = document.getElementById('sidebar-search-form');
+            if (sidebarSearchForm) {
+                // Pre-fill search input with URL parameter if present
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('q');
+                if (searchQuery) {
+                    const searchInput = sidebarSearchForm.querySelector('input[name="q"]');
+                    if (searchInput) {
+                        searchInput.value = decodeURIComponent(searchQuery);
+                    }
+                }
+                
+                sidebarSearchForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const searchInput = this.querySelector('input[name="q"]');
+                    const searchQuery = searchInput.value.trim();
+                    
+                    if (searchQuery) {
+                        // Update URL with new search query
+                        const newUrl = new URL(window.location);
+                        newUrl.searchParams.set('q', searchQuery);
+                        window.location.href = newUrl.toString();
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

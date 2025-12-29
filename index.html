@@ -170,7 +170,7 @@
     <div class="popup-search-box d-none d-lg-block">
         <button class="searchClose"><i class="fal fa-times"></i></button>
         <form action="#">
-            <input type="text" placeholder="What are you looking for?">
+            <input type="text" name="q" placeholder="What are you looking for?">
             <button type="submit"><i class="fal fa-search"></i></button>
         </form>
     </div><!--==============================
@@ -590,7 +590,7 @@ Hero Area
 Search Area
 ==============================-->
     <div class="search-area">
-        <form action="/submit-form">
+        <form id="homepage-search-form" action="search.html" method="get">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-10">
@@ -722,7 +722,7 @@ Search Area
                                             <div class="advance-btn-wrapper">
                                                 <div class="advance-search-btn">
                                                     <div class="search-btn-item">
-                                                        <a class="th-btn radius w-100"><i class="fa-regular fa-magnifying-glass me-2"></i> Search Floor Plans </a>
+                                                        <button type="submit" class="th-btn radius w-100"><i class="fa-regular fa-magnifying-glass me-2"></i> Search Floor Plans </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -874,7 +874,7 @@ Search Area
                                             <div class="advance-btn-wrapper">
                                                 <div class="advance-search-btn">
                                                     <div class="search-btn-item">
-                                                        <a class="th-btn radius w-100"><i class="fa-regular fa-magnifying-glass me-2"></i> Search Floor Plans </a>
+                                                        <button type="submit" class="th-btn radius w-100"><i class="fa-regular fa-magnifying-glass me-2"></i> Search Floor Plans </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1025,7 +1025,7 @@ Search Area
                                             <div class="advance-btn-wrapper">
                                                 <div class="advance-search-btn">
                                                     <div class="search-btn-item">
-                                                        <a class="th-btn radius w-100"><i class="fa-regular fa-magnifying-glass me-2"></i> Search Floor Plans </a>
+                                                        <button type="submit" class="th-btn radius w-100"><i class="fa-regular fa-magnifying-glass me-2"></i> Search Floor Plans </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1928,6 +1928,76 @@ Blog Area
     
     <!-- Main Js File -->
     <script src="assets/js/main.js"></script>
+    
+    <!-- Homepage Search Form Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('homepage-search-form');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get the active tab
+                    const activeTab = document.querySelector('#myTabContent .tab-pane.active');
+                    if (!activeTab) return;
+                    
+                    // Collect form data from active tab
+                    const formData = new FormData();
+                    const searchParams = new URLSearchParams();
+                    
+                    // Get all form inputs from the active tab
+                    const inputs = activeTab.querySelectorAll('select, input[type="text"], input[type="number"]');
+                    
+                    inputs.forEach(input => {
+                        if (input.value && input.value !== '' && input.name) {
+                            // Map form field names to API parameter names
+                            let paramName = input.name;
+                            
+                            // Handle special field mappings
+                            if (input.name === 'property_type') {
+                                // Map property type values to category
+                                const categoryMap = {
+                                    'single-story': 'Single Story',
+                                    'double-story': 'Double Story',
+                                    'farm-house': 'Farm House',
+                                    'small-lot-design': 'Small Lot Design',
+                                    'corner-lot': 'Corner Lot'
+                                };
+                                const mappedValue = categoryMap[input.value] || input.value;
+                                if (mappedValue) {
+                                    searchParams.append('category', mappedValue);
+                                }
+                            } else if (input.name === 'lot_size') {
+                                searchParams.append('lot_size', input.value);
+                            } else if (input.name === 'Garage' || input.name.startsWith('Garage')) {
+                                searchParams.append('garage', input.value);
+                            } else if (input.name === 'Floor_Level' || input.name.startsWith('Floor_Level')) {
+                                searchParams.append('floor_level', input.value);
+                            } else if (input.name === 'parking_spaces' || input.name.startsWith('parking_spaces')) {
+                                // Parking spaces might map to garages
+                                searchParams.append('garage', input.value);
+                            } else if (input.name === 'bedrooms' || input.name.startsWith('bedrooms')) {
+                                searchParams.append('bedrooms', input.value);
+                            } else if (input.name === 'bathrooms' || input.name.startsWith('bathrooms')) {
+                                searchParams.append('bathrooms', input.value);
+                            } else if (input.name === 'area' || input.name.startsWith('area')) {
+                                searchParams.append('area', input.value);
+                            } else if (input.name === 'location' || input.name.startsWith('location')) {
+                                searchParams.append('location', input.value);
+                            } else {
+                                // For other fields, use the name as-is
+                                searchParams.append(input.name, input.value);
+                            }
+                        }
+                    });
+                    
+                    // Redirect to search page with query parameters
+                    const searchUrl = 'search.html' + (searchParams.toString() ? '?' + searchParams.toString() : '');
+                    window.location.href = searchUrl;
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

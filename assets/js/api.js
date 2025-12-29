@@ -106,6 +106,7 @@ class PropertyAPI {
     async searchProperties(searchCriteria) {
         try {
             const params = this.buildSearchParams(searchCriteria);
+            console.log('Search parameters:', params);
             const response = await this.makeAPICall(this.endpoints.properties, params);
             return this.processPropertiesData(response);
         } catch (error) {
@@ -247,9 +248,31 @@ class PropertyAPI {
      */
     buildSearchParams(searchCriteria) {
         const params = {
-            limit: 50,
+            limit: 100,
             page: 1
         };
+
+        // Search query (title or category)
+        if (searchCriteria.q || searchCriteria.query) {
+            const searchQuery = searchCriteria.q || searchCriteria.query;
+            // Try to match category names first, then fall back to title search
+            const categoryMatch = this.matchCategory(searchQuery);
+            if (categoryMatch) {
+                params.category = categoryMatch;
+            } else {
+                params.title = searchQuery;
+            }
+        }
+
+        // Title filter
+        if (searchCriteria.title) {
+            params.title = searchCriteria.title;
+        }
+
+        // Category filter
+        if (searchCriteria.category) {
+            params.category = searchCriteria.category;
+        }
 
         // Property Type filter
         if (searchCriteria.property_type) {
@@ -292,6 +315,45 @@ class PropertyAPI {
         }
 
         return params;
+    }
+
+    /**
+     * Match search query to category name
+     * @param {string} query - Search query
+     * @returns {string|null} - Matched category or null
+     */
+    matchCategory(query) {
+        const normalizedQuery = query.toLowerCase().trim();
+        const categoryMap = {
+            'single story': 'Single Story',
+            'single-story': 'Single Story',
+            'single storey': 'Single Story',
+            'double story': 'Double Story',
+            'double-story': 'Double Story',
+            'double storey': 'Double Story',
+            'small lot': 'Small Lot Design',
+            'small-lot': 'Small Lot Design',
+            'farm house': 'Farm House',
+            'farmhouse': 'Farm House',
+            'apartment': 'Apartment',
+            'villa': 'Villa',
+            'condo': 'Condo',
+            'house': 'House'
+        };
+
+        // Check for exact match
+        if (categoryMap[normalizedQuery]) {
+            return categoryMap[normalizedQuery];
+        }
+
+        // Check for partial match
+        for (const [key, value] of Object.entries(categoryMap)) {
+            if (normalizedQuery.includes(key) || key.includes(normalizedQuery)) {
+                return value;
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -644,6 +644,18 @@
         "show"
     );
 
+    /*---------- Search Form Handler ----------*/
+    $(".popup-search-box form").on("submit", function (e) {
+        e.preventDefault();
+        const searchInput = $(this).find("input[type='text']");
+        const searchQuery = searchInput.val().trim();
+        
+        if (searchQuery) {
+            // Redirect to search.html with query parameter
+            window.location.href = `search.html?q=${encodeURIComponent(searchQuery)}`;
+        }
+    });
+
     /*---------- 10. Popup Sidemenu ----------*/
     function popupSideMenu($sideMenu, $sideMunuOpen, $sideMenuCls, $toggleCls) {
         // Sidebar Popup

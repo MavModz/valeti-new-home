@@ -69,8 +69,23 @@ class PropertyDisplay {
         this.showLoading();
         
         try {
-            // Fetch all properties using multiple API calls if needed (API limit is 100 per request)
-            const allProperties = await this.fetchAllPropertiesFromAPI();
+            // Check for URL search parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get('q');
+            
+            console.log('Search query from URL:', searchQuery);
+            console.log('All URL parameters:', Object.fromEntries(urlParams));
+            
+            // Always fetch all properties first (API might not support server-side filtering)
+            let allProperties = await this.fetchAllPropertiesFromAPI();
+            console.log('Fetched properties count:', allProperties.length);
+            
+            // Apply filters based on URL parameters
+            if (urlParams.toString()) {
+                console.log('Applying filters from URL parameters');
+                allProperties = this.applyFiltersFromURL(allProperties, urlParams);
+                console.log('Filtered properties count:', allProperties.length);
+            }
             
             if (allProperties.length > 0) {
                 // Sort by latest first (createdAt descending)
@@ -81,6 +96,7 @@ class PropertyDisplay {
             } else {
                 this.currentProperties = [];
                 this.displayPropertiesWithPagination();
+                this.updateSearchResultsCount(0);
             }
         } catch (error) {
             console.error('Error loading properties:', error);
@@ -88,6 +104,128 @@ class PropertyDisplay {
         } finally {
             this.hideLoading();
         }
+    }
+
+    /**
+     * Apply filters from URL parameters
+     * @param {array} properties - Properties array
+     * @param {URLSearchParams} urlParams - URL search parameters
+     * @returns {array} - Filtered properties
+     */
+    applyFiltersFromURL(properties, urlParams) {
+        let filtered = [...properties];
+        
+        // Search query (title, category, description)
+        const searchQuery = urlParams.get('q');
+        if (searchQuery) {
+            filtered = this.filterPropertiesByQuery(filtered, searchQuery);
+        }
+        
+        // Category filter
+        const category = urlParams.get('category');
+        if (category) {
+            filtered = filtered.filter(property => {
+                return property.category && 
+                       property.category.toLowerCase() === category.toLowerCase();
+            });
+        }
+        
+        // Bedrooms filter
+        const bedrooms = urlParams.get('bedrooms');
+        if (bedrooms) {
+            const bedroomsNum = parseInt(bedrooms);
+            filtered = filtered.filter(property => {
+                return property.features.bedrooms === bedroomsNum;
+            });
+        }
+        
+        // Bathrooms filter
+        const bathrooms = urlParams.get('bathrooms');
+        if (bathrooms) {
+            const bathroomsNum = parseInt(bathrooms);
+            filtered = filtered.filter(property => {
+                return property.features.bathrooms === bathroomsNum;
+            });
+        }
+        
+        // Area filter (minimum area)
+        const area = urlParams.get('area');
+        if (area) {
+            const areaNum = parseInt(area);
+            filtered = filtered.filter(property => {
+                return property.features.area && property.features.area >= areaNum;
+            });
+        }
+        
+        // Lot size filter (propertyFor)
+        const lotSize = urlParams.get('lot_size');
+        if (lotSize) {
+            filtered = filtered.filter(property => {
+                if (!property.propertyFor) return false;
+                // Extract number from propertyFor (e.g., "12.5 meter" -> 12.5)
+                const lotSizeMatch = property.propertyFor.match(/(\d+\.?\d*)/);
+                if (lotSizeMatch) {
+                    const propertyLotSize = parseFloat(lotSizeMatch[1]);
+                    return propertyLotSize >= parseFloat(lotSize);
+                }
+                return false;
+            });
+        }
+        
+        // Garage filter
+        const garage = urlParams.get('garage');
+        if (garage) {
+            const garageNum = parseInt(garage);
+            filtered = filtered.filter(property => {
+                return property.features.garages && property.features.garages >= garageNum;
+            });
+        }
+        
+        // Floor level filter
+        const floorLevel = urlParams.get('floor_level');
+        if (floorLevel) {
+            const floorsNum = floorLevel === 'single' ? 1 : 2;
+            filtered = filtered.filter(property => {
+                return property.features.floors === floorsNum;
+            });
+        }
+        
+        // Location filter
+        const location = urlParams.get('location');
+        if (location) {
+            filtered = filtered.filter(property => {
+                if (!property.location) return false;
+                const locationStr = `${property.location.state || ''} ${property.location.country || ''}`.toLowerCase();
+                return locationStr.includes(location.toLowerCase());
+            });
+        }
+        
+        return filtered;
+    }
+
+    /**
+     * Filter properties by search query (client-side fallback)
+     * @param {array} properties - Properties array
+     * @param {string} query - Search query
+     * @returns {array} - Filtered properties
+     */
+    filterPropertiesByQuery(properties, query) {
+        if (!query) return properties;
+        
+        const normalizedQuery = query.toLowerCase().trim();
+        
+        return properties.filter(property => {
+            // Search in title
+            const titleMatch = property.title && property.title.toLowerCase().includes(normalizedQuery);
+            
+            // Search in category
+            const categoryMatch = property.category && property.category.toLowerCase().includes(normalizedQuery);
+            
+            // Search in description
+            const descriptionMatch = property.description && property.description.toLowerCase().includes(normalizedQuery);
+            
+            return titleMatch || categoryMatch || descriptionMatch;
+        });
     }
 
     /**
@@ -644,8 +782,8 @@ class PropertyDisplay {
                 <div class="text-center py-5">
                     <div class="th-empty-state">
                         <i class="fa-light fa-home fa-3x mb-3 text-muted"></i>
-                        <h4 class="mb-3">No Properties Found</h4>
-                        <p class="text-muted mb-4">We couldn't find any properties matching your criteria.</p>
+                        <h4 class="mb-3">No Plans Found</h4>
+                        <p class="text-muted mb-4">We couldn't find any plans matching your criteria.</p>
                         <button type="button" class="th-btn" onclick="propertyDisplay.clearFilters()">
                             Clear Filters
                         </button>
@@ -665,8 +803,8 @@ class PropertyDisplay {
                 <div class="text-center py-5">
                     <div class="th-empty-state">
                         <i class="fa-light fa-star fa-3x mb-3 text-muted"></i>
-                        <h4 class="mb-3">No Featured Properties</h4>
-                        <p class="text-muted mb-4">We don't have any featured properties at the moment.</p>
+                        <h4 class="mb-3">No Featured Plans</h4>
+                        <p class="text-muted mb-4">We don't have any featured plans at the moment.</p>
                     </div>
                 </div>
             </div>
@@ -778,6 +916,21 @@ class PropertyDisplay {
     async clearFilters() {
         this.currentFilters = {};
         this.currentPage = 1; // Reset to first page
+        
+        // Clear all URL query parameters if on search page
+        if (this.isSearchPage) {
+            const url = new URL(window.location);
+            // Remove all search parameters
+            url.search = '';
+            // Update URL without reloading (using replaceState to avoid adding to history)
+            window.history.replaceState({}, '', url.toString());
+            
+            // Clear search input fields
+            const searchInputs = document.querySelectorAll('input[name="q"]');
+            searchInputs.forEach(input => {
+                input.value = '';
+            });
+        }
         
         // Reset form inputs
         const forms = document.querySelectorAll('form[data-search-form]');
