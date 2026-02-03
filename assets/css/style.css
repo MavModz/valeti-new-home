@@ -25338,6 +25338,7 @@ input {
 
 .property-slider1 .property-slider-img img {
   border-radius: 16px;
+  object-fit: contain;
 }
 
 .property-slider1 .slider-arrow {
