@@ -224,6 +224,7 @@ class PropertyAPI {
                 features: property.features,
                 amenities: property.amenities,
                 images: property.images,
+                floorPlans: property.floorPlans || [],
                 primaryImage: property.primaryImage,
                 fullAddress: property.fullAddress,
                 formattedPrice: property.formattedPrice,

@@ -25844,6 +25844,9 @@ input {
 
 .property-grid-plan .property-grid-thumb img {
   width: 100%;
+  max-height: 420px;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .property-grid-plan .property-grid-title {

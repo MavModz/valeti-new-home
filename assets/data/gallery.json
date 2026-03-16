@@ -1,0 +1,27 @@
+{
+  "categories": [
+    { "id": "all", "label": "View All" },
+    { "id": "single-storey", "label": "Single Storey" },
+    { "id": "double-storey", "label": "Double Storey" },
+    { "id": "farmhouse", "label": "Farmhouse" },
+    { "id": "knockdown-rebuild", "label": "Knockdown Rebuild" },
+    { "id": "multi-unit", "label": "Multi-Unit" },
+    { "id": "display-homes", "label": "Display Homes" },
+    { "id": "custom-homes", "label": "Custom Homes" },
+    { "id": "completed", "label": "Completed Projects" }
+  ],
+  "images": [
+    { "url": "assets/img/gallery/gallery-inner-1.jpg", "caption": "Valeti custom home", "categories": ["single-storey", "completed"] },
+    { "url": "assets/img/gallery/gallery-inner-2.jpg", "caption": "Double storey design", "categories": ["double-storey", "custom-homes"] },
+    { "url": "assets/img/gallery/gallery-inner-3.jpg", "caption": "Farmhouse exterior", "categories": ["farmhouse", "completed"] },
+    { "url": "assets/img/gallery/gallery-inner-4.jpg", "caption": "Modern facade", "categories": ["single-storey", "display-homes"] },
+    { "url": "assets/img/gallery/gallery-inner-5.jpg", "caption": "Knockdown rebuild project", "categories": ["knockdown-rebuild", "completed"] },
+    { "url": "assets/img/gallery/gallery-inner-6.jpg", "caption": "Multi-unit development", "categories": ["multi-unit", "completed"] },
+    { "url": "assets/img/gallery/gallery-inner-7.jpg", "caption": "Display home", "categories": ["display-homes", "single-storey"] },
+    { "url": "assets/img/gallery/gallery-inner-8.jpg", "caption": "Custom architectural design", "categories": ["custom-homes", "double-storey"] },
+    { "url": "assets/img/gallery/gallery-inner-9.jpg", "caption": "Farmhouse living", "categories": ["farmhouse", "custom-homes"] },
+    { "url": "assets/img/gallery/gallery-inner-10.jpg", "caption": "Completed single storey", "categories": ["single-storey", "completed"] },
+    { "url": "assets/img/gallery/gallery-inner-11.jpg", "caption": "Double storey display", "categories": ["double-storey", "display-homes"] },
+    { "url": "assets/img/gallery/gallery-inner-12.jpg", "caption": "Townhouse project", "categories": ["multi-unit", "completed"] }
+  ]
+}
